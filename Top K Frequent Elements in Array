@@ -1,0 +1,45 @@
+class Solution {
+  public:
+  
+  static bool comp(const pair <int , int> &a , const pair <int , int> &b)  // step 2 part 2
+  {
+      if(a.second > b.second)
+      {
+          return true;
+      }
+      else if(a.second == b.second)
+      {
+          return a.first > b.first;
+      }
+      else
+      {
+          return false;
+      }
+  }
+  
+    vector<int> topK(vector<int>& nums, int k) {
+        // Code here
+        unordered_map<int , int> mp; // step 1
+        for(auto i : nums) // sare elements le lega map ke
+        {
+            mp[i]++;
+        }
+        
+        vector< pair<int , int> > freq; // step 2 part 1
+        for(auto it : mp) // it iterator
+        {
+            freq.push_back( {it.first , it.second} );
+        }
+        
+        sort(freq.begin() , freq.end() , comp); // sort function call step 2 part 2
+        
+        vector<int>ans; //step 3
+        {
+            for(int i = 0 ; i < k ; i++)
+            {
+                ans.push_back(freq[i].first);
+            }
+            return ans;
+        }
+    }
+};
