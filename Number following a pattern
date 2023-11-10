@@ -1,0 +1,49 @@
+//{ Driver Code Starts
+#include<bits/stdc++.h> 
+using namespace std; 
+
+// } Driver Code Ends
+class Solution{   
+public:
+    string printMinNumberForPattern(string S){
+        // code here 
+        string ans = "";  // to return ans
+        stack<int> st; // ham isse stack se kar rahe esliye 
+        int n = S.length() ; // loop chalega jab tak string ki ki length hogi
+        
+        for(int i = 0 ; i <= n ; i++)
+        {
+            st.push(i + 1); // i+1 kyuki 0 indexing hai hame 1 se krna 
+            
+            // main condition  agar i aaya 
+            if(S[i] == 'I' || i == n)
+            {
+                while(!st.empty())  // hame stack se element nikalna haina 
+                {
+                    ans += to_string(st.top());
+                    st.pop();
+                } 
+            }
+        }
+        
+        return ans;
+    }
+};
+
+
+//{ Driver Code Starts.
+int main() 
+{ 
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        string S;
+        cin >> S;
+        Solution ob;
+        cout << ob.printMinNumberForPattern(S) << endl;
+    }
+    return 0; 
+} 
+
+// } Driver Code Ends
