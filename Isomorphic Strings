@@ -1,0 +1,45 @@
+class Solution
+{
+    public:
+    //Function to check if two strings are isomorphic.
+    bool areIsomorphic(string str1, string str2)
+    {
+        
+        // Your code here
+        int n = str1.length() ;  // 1st string ki length nikla 
+        // agar dono ki length same nhi hui to false 
+        if(str2.length() != n)
+        {
+            return false;
+        }
+        
+        vector<int> f(26 , -1);  // 26 length hai aur sabme -1 hai 
+        
+        unordered_map <char , char> mp;
+        
+        for(int i = 0 ; i < n ; i++)
+        {
+            if(mp.find(str1[i]) != mp.end())  // agar end tak nhi gaya hai 
+            {
+                if(mp[str1[i]] != str2[i])   // pehle string wale ke eleemnt agar second wale ke same nhi hai toh false
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if(f[str2[i] - 'a'] != -1)   // map hogaya hai kisi aur ke sath toh false
+                {
+                    return false;
+                }
+                else    // pehle wale ko second wale se map krdo aur value one daldo 
+                {
+                    mp[str1[i]] = str2[i];
+                    f[str2[i] - 'a'] = 1;
+                }
+            }
+        }
+        return true;
+        
+    }
+};
