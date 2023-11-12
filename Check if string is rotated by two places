@@ -1,0 +1,56 @@
+ // with space method 
+
+class Solution
+{
+    public:
+    //Function to check if a string can be obtained by rotating
+    //another string by exactly 2 places.
+    bool isRotated(string str1, string str2)
+    {
+        // Your code here
+        
+        string s1 , s2;
+        int n = str1.length();
+        if(n == 2) return str1 == str2;
+         
+        // clockwise 
+        s1 += str1.substr(2);
+        s1 += str1[0];
+        s1 += str1[1];
+        
+        //anticlockwise 
+        
+        s2 += str1[n - 2];
+        s2 += str1[n - 1];
+        
+        s2 += str1.substr(0 , n-2);
+        
+        if(s1 == str2 || s2 == str2) return true;
+        return false;
+    }
+
+};
+
+
+// without space 
+
+class Solution
+{
+    public:
+    //Function to check if a string can be obtained by rotating
+    //another string by exactly 2 places.
+    bool isRotated(string str1, string str2)
+    {
+        // Your code here
+        int n = str1.length();
+        if(n == 2) return str1 == str2;
+         
+        for(int i = 0 ; i < n ; i++)
+        {
+            if( str1[(i + 2) % n] == str2[i] || str1[(n + i - 2) % n] == str2[i] ) continue;
+            else return false;
+        }
+        return true;
+    }
+
+};
