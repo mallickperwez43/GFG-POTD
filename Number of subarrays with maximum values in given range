@@ -1,0 +1,26 @@
+class Solution{
+    public:
+    long countSubarrays(int a[], int n, int L, int R)
+    {
+        // Complete the function
+        long ans = 0;
+        long btwLnR = 0 , lessthanL = 0;
+        
+        for(int i = 0 ; i < n ; i++){
+            if(a[i] < L){  // yeh khudka subarray nhi baneyga single me lekin iske pehle wale ko leke yeh banega 
+                ans += btwLnR;
+                lessthanL++;
+            }
+            else if(a[i] > R){ // yeh subarray nhi banayega na iske pehle wale se esliye zero
+                btwLnR = 0;
+                lessthanL = 0;
+            }
+            else{ // jab a[i] range me hoga toh l se kaam aur lnr wale bhi aur isko leke single wala esliye + 1 
+                ans += btwLnR + lessthanL + 1;
+                btwLnR += lessthanL + 1;  // ab yaha hame ek naya mila uske purane(lessthanL) wale ko bhi lelo
+                lessthanL = 0;   // leliya esliye 0
+            }
+        }
+        return ans;
+    }
+};
