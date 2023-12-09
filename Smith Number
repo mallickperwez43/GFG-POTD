@@ -1,0 +1,44 @@
+class Solution {
+  public:
+  
+    // digits ka sum
+    int sumDigits(int n){
+        int sum = 0;
+        while(n){
+            sum += n%10;
+            n /= 10;
+        }
+        return sum;
+    }
+    
+    // prime check
+    bool isPrime(int n){
+        if(n == 1) return false;
+        for(int i = 2 ; i <= sqrt(n) ; i++){
+            if(n%i == 0) return false;
+        }
+        return true;
+    }
+    
+    int smithNum(int n) {
+        // code here
+        int sum = sumDigits(n); 
+        int sumPrimeFactors = 0;
+        //smith no composite hai esliye agar n prime hua to 0
+        if(isPrime(n)) return 0;
+        
+        // prime factor ke liye 
+        for(int i = 2 ; i <= n ; i++){
+            // if any i divides n store the sum of that i
+            if(n%i == 0){
+                int s = sumDigits(i);
+                // jab tak divide krta rahe
+                while(n > 0 && n%i == 0){
+                    sumPrimeFactors += s;
+                    n /= i;
+                }
+            }
+        }
+        return sum == sumPrimeFactors;
+    }
+};
