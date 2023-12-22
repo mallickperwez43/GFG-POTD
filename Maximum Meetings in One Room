@@ -1,0 +1,25 @@
+class Solution{
+public:
+    vector<int> maxMeetings(int N,vector<int> &S,vector<int> &F){
+       // vector pair of pair and int to store pair<pair<endting time , starting time> , meeting no>>
+       vector<pair<pair<int , int> , int>> v;
+       for(int i = 0 ; i < N ; i++){
+           v.push_back({{F[i] , S[i]} , i+1});
+       }
+       //sort according to ending time
+       sort(v.begin() , v.end());
+       
+       vector<int> ans;
+       int end = v[0].first.first;  // first meeting jab sort ke baad
+       ans.push_back(v[0].second);  // meeting no
+       for(int i = 1 ; i < N ; i++){
+           // if next starting time is greater than previous meeting ending time
+           if(v[i].first.second > end){
+               ans.push_back(v[i].second); // meeting no daldo
+               end = v[i].first.first;     // end update
+           }
+       }
+       sort(ans.begin() , ans.end());
+       return ans;
+    }
+};
