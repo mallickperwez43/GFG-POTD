@@ -1,0 +1,77 @@
+//Method 1
+
+/* Link list Node/
+struct Node
+{
+    bool data;   // NOTE data is bool
+    Node* next;
+    
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+    
+}; */
+
+class Solution
+{
+    public:
+        // Should return decimal equivalent modulo 1000000007 of binary linked list 
+        long long unsigned int decimalValue(Node *head)
+        {
+           // Your Code Here
+           long long ans = 0, power_of_two = 1;
+           
+           function<void(Node *)> traverse = [&](Node * node) {
+               if(!node)
+                    return;
+                    
+                traverse(node -> next);
+                
+                if(node -> data)
+                    ans = (ans + power_of_two) % MOD;
+                    
+                power_of_two = (power_of_two * 2LL) % MOD;    
+           };
+           
+           traverse(head);
+           
+           return ans;
+        }
+};
+
+//Method 2
+
+/* Link list Node/
+struct Node
+{
+    bool data;   // NOTE data is bool
+    Node* next;
+    
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+    
+}; */
+
+class Solution
+{
+    public:
+        // Should return decimal equivalent modulo 1000000007 of binary linked list 
+        long long unsigned int decimalValue(Node *head)
+        {
+           // Your Code Here
+           long long ans = 0;
+           
+           while(head){
+               ans = (ans * 2LL) % MOD;
+               
+               ans = (ans + head -> data);
+               
+               head = head -> next;
+           }
+           
+           return ans;
+        }
+};
