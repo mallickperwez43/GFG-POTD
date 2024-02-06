@@ -1,0 +1,41 @@
+//Node Structure
+/*struct NodeGiven a binary tree with n nodes and a non-negative integer k, the task is to count the number of special nodes. A node is considered special if there exists at least one leaf in its subtree such that the distance between the node and leaf is exactly k.
+{
+	int data;
+	Node *left, *right;
+};*/
+
+class Solution
+{
+    public:
+    //Function to return count of nodes at a given distance from leaf nodes.
+    int printKDistantfromLeaf(Node* root, int k)
+    {
+    	//Add your code here. 
+    	vector<Node *> path;
+    	unordered_set<Node *> ans;
+    	
+    	function<void(Node *)> dfs = [&](Node * node) {
+    	    if(!node)
+    	        return;
+    	    
+    	    path.push_back(node);
+    	    
+    	    if(!(node -> left) and !(node -> right)){
+    	        int p = (int)path.size() - 1 - k;
+    	        
+    	        if(p > -1)
+    	            ans.insert(path[p]);
+    	    }
+    	    
+    	    dfs(node -> left);
+    	    dfs(node -> right);
+    	    
+    	    path.pop_back();
+    	};
+    	
+    	dfs(root);
+    	
+    	return ans.size();
+    }
+};
