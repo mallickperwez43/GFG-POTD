@@ -1,0 +1,97 @@
+//TRIE
+
+//{ Driver Code Starts
+//Initial template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+
+// } Driver Code Ends
+//User function template for C++
+
+// s : given string to search
+// dictionary : vector of available strings
+class Node {
+    public:
+    unordered_map<char, Node *> next;
+    int end;
+    
+    Node(){
+        this -> end = 0;
+    }
+};
+
+void insert(string &x, Node * root){
+    Node * node = root;
+    
+    for(auto i : x) {
+        if(node -> next[i]){
+            node = node -> next[i];
+        }
+        else{
+            Node * new_node = new Node();
+            node -> next[i] = new_node;
+            node = new_node;
+        }
+    }
+    
+    ++(node -> end);
+}
+
+
+class Solution
+{
+public:
+    int wordBreak(int n, string s, vector<string> &dictionary) {
+        //code here
+        Node * root = new Node();
+        
+        for(auto i : dictionary)
+            insert(i, root);
+            
+        int m = s.size();
+        vector<bool> dp(m + 1, 0);
+        dp[m] = 1;
+        
+        for(int i = m - 1; i > -1; i--){
+            Node * node = root;
+            for(int j = i; j < m; j++){
+                if(!(node -> next[s[j]]))
+                    break;
+                
+                node = node -> next[s[j]];
+                
+                if(node -> end > 0 and dp[j + 1]){
+                    dp[i] = 1;
+                    break;
+                }
+            }
+        }
+        
+        return dp[0];
+    }
+};
+
+//{ Driver Code Starts.
+
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
+        int n;
+        cin>>n;
+        vector<string> dictionary;
+        for(int i=0;i<n;i++){
+            string S;
+            cin>>S;
+            dictionary.push_back(S);
+        }
+        string s;
+        cin>>s;
+        Solution ob;
+        cout<<ob.wordBreak(n, s, dictionary)<<"\n";
+    }
+}
+
+// } Driver Code Ends
