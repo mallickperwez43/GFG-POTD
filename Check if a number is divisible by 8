@@ -1,0 +1,44 @@
+// brute force (stoi and bit)
+
+class Solution{
+    public:
+    int DivisibleByEight(string s){
+        //code here
+        int len = s.size();
+        
+        if(len > 3){
+            int digit = 0;
+            int hun = int(s[len - 3]);
+            digit = digit * 10 + hun;
+            int ten = int(s[len - 2]);
+            digit = digit * 10 + ten;
+            int one = int(s[len - 1]);
+            digit = digit * 10 + one;
+            
+            if(digit % 8 == 0) return 1;
+            return -1;
+        }
+        else{
+            int num = stoi(s);
+            if(num % 8 == 0) return 1;
+            return -1;
+        }
+    }
+};
+
+
+// optimal (same but without stoi function)
+
+class Solution{
+    public:
+    int DivisibleByEight(string s){
+        //code here
+        int a=0;
+        int n=s.size();
+        for(int i=n-3;i<n;i++){
+            a=a*10+(s[i]-'0');
+        }
+        if(a%8==0)return 1;
+        return -1; 
+    }
+};
