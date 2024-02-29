@@ -1,0 +1,49 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+
+using namespace std;
+
+
+// } Driver Code Ends
+//User function template for C++
+class Solution{
+public:
+	
+	long long sumBitDifferences(int arr[], int n) {
+	    // code here
+	    long long setBit = 0, nonsetBit = 0, num = 1, ans = 0;
+	    for(int i = 0; i < 32; i++){  // travserse every bit and check the set and nonset bits count
+	        for(int j = 0; j < n; j++){ // traverse every element of the array
+	            if(arr[j] & num) setBit++;
+	            else nonsetBit++;
+	        }
+	        ans += 2 * setBit * nonsetBit;  // every pair can be formed twice so mulitply by two 
+	        num = num << 1;    // now we want to check another bit 
+	        // again intialize both counters as zero
+	        setBit = 0;
+	        nonsetBit = 0;
+	    }
+	    
+	    return ans;
+	}
+};
+
+//{ Driver Code Starts.
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n, i;
+        cin >> n;
+        int arr[n];
+        for (i = 0; i < n; i++) {
+            cin >> arr[i];
+        }
+        Solution ob;
+        auto ans = ob.sumBitDifferences(arr, n);
+        cout << ans << "\n";
+    }
+    return 0;
+}
+// } Driver Code Ends
