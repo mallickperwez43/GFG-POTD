@@ -1,0 +1,37 @@
+class Solution {
+  public:
+    string longestSubstring(string s, int n) {
+        // code here
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1, 0));  // create a 2d array of dp
+        int res_length = 0;  //  initially the res_length of subtring is 0 
+        int i, index = 0;    // i -> loops index -> last point traversed
+        for(int i = 1; i <= n; i++){
+            for(int j = i + 1; j <= n; j++){
+                  // over lapping -> dp[i][j] > j - i
+                   //no overlapping               // repeating 
+                if(j - i > dp[i - 1][j - 1] and s[i - 1] == s[j - 1]){ 
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                    if(dp[i][j] > res_length){
+                        res_length = dp[i][j];   // update reslength
+                        index = max(i, index);   // and index
+                    }
+                } 
+                else{
+                    dp[i][j]=0;             // digonal are zero bcoz overlapping and lower left triangle 
+                }                           // is pf no use to us
+            }
+        } 
+        
+        string res = "";                // ans string 
+        if(res_length > 0){             
+            for(i = index-res_length + 1; i <= index; i++){   // calculate the distance 
+                res += s[i - 1];                              // add char to ans string 
+            }
+        }
+        if(res == ""){   // edge case
+            res = "-1";
+        }
+        
+        return res;
+    }
+};
