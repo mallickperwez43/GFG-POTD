@@ -1,0 +1,62 @@
+// method 1 simply concatinating 
+
+//User function template for C++
+
+class Solution{
+  public:
+    char nthCharacter(string s, int r, int n) {
+        //code here
+        while(r--){
+            string result = "";
+            for(char ch : s){
+                if(ch == '1')
+                    result += "10";
+                else
+                    result += "01";
+                
+            }
+            s = result.substr(0, n + 1);
+        }
+        
+        return s[n];
+    }
+};
+
+tc : O(r * |s|) sc : O(|s|) 
+
+// method 2
+
+//User function template for C++
+
+class Solution{
+  public:
+    char nthCharacter(string s, int r, int n) {
+        //code here 
+        
+        // we dont need to traverse the whole string instead we just 
+        int neededSize = pow(2, r);  // traverse the power of 2 along the iteration 
+        int rspnsbleIdx = n / neededSize;   // the index that is responsible for the answer 
+                                            // would lie the needed range
+        
+        char ch = s[rspnsbleIdx];          // taking that char 
+        string temp1;                      // in temp1 string
+        temp1 += ch;
+        
+        while(r--){       // r iterations
+            string temp2 = "";  // another temp string 
+            
+            for(auto i : temp1){    
+                if(i == '1') 
+                    temp2 += "10";
+                else
+                    temp2 += "01";
+            }
+            
+            temp1 = temp2;
+        }
+        n %= neededSize;  // updating the n to lie in range 0 to neededSize;
+        return temp1[n];  
+    }
+};
+
+// tc : O(r) sc : O(pow(2, r))
