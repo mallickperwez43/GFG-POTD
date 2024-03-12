@@ -1,0 +1,67 @@
+class Solution {
+  public:
+    long long mat[3][3], res[3][3]; // 2D arrays to store matrices for matrix exponentiation
+
+    // Function to perform matrix multiplication
+    void mul(long long res[3][3], long long mat[3][3], long long m)
+    {
+        long long res1[3][3]; // Resultant matrix
+        memset(res1, 0, sizeof(res1)); // Initialize res1 with zeros
+
+        // Performing matrix multiplication
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                for (int k = 0; k < 3; k++)
+                {
+                    res1[i][j] += (res[i][k] * mat[k][j]); // Multiplying matrices res and mat
+                    res1[i][j] %= m; // Taking modulo m
+                }
+            }
+        }
+
+        // Copying the result back to res array
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                res[i][j] = res1[i][j];
+    }
+
+    // Function to perform matrix exponentiation
+    void mat_exp(long long n, long long m)
+    {
+        // Binary exponentiation to compute mat raised to the power of n
+        while (n > 0)
+        {
+            if (n & 1) // If n is odd
+                mul(res, mat, m); // Multiply res with mat
+            mul(mat, mat, m); // Square the matrix mat
+            n /= 2; // Halve n
+        }
+    }
+  
+    long long genFibNum(long long a, long long b, long long c, long long n, long long m) {
+        // code here
+        
+        // Initialize the res matrix with identity matrix
+        memset(res, 0, sizeof(res));
+        res[0][0] = res[1][1] = res[2][2] = 1;
+
+        // Initialize the mat matrix with appropriate coefficients
+        mat[0][0] = a;
+        mat[0][1] = b;
+        mat[0][2] = mat[1][0] = mat[2][2] = 1;
+        mat[1][1] = mat[1][2] = mat[2][0] = mat[2][1] = 0;
+
+        // If n is less than or equal to 2, return 1 modulo m
+        if (n <= 2)
+            return (1 % m);
+        else
+        {
+            // Compute mat raised to the power of (n - 2)
+            mat_exp(n - 2, m);
+            // Return the Fibonacci-like number modulo m using the formula
+            return (res[0][0] + res[0][1] + c * res[0][2]) % m;
+        }
+    }
+};
