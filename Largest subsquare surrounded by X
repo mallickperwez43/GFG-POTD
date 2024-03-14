@@ -1,0 +1,73 @@
+//{ Driver Code Starts
+// Initial Template for C++
+
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+// User function Template for C++
+
+class Solution {
+  public:
+    int largestSubsquare(int n, vector<vector<char>> a) {
+        // code here
+        // Initialize two 2D vectors to store the lengths of contiguous 'X's
+        vector<vector<int>> left(n, vector<int>(n, 0)); // Stores the length of contiguous 'X's to the left of (i, j)
+        vector<vector<int>> top(n, vector<int>(n, 0));  // Stores the length of contiguous 'X's above (i, j)
+        int ans = 0; // Initialize the answer to 0
+
+        // Loop through each cell in the matrix
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (a[i][j] == 'X') { // If the current cell contains 'X'
+                    // Calculate the length of contiguous 'X's to the left of the current cell
+                    if (j != 0) {
+                        left[i][j] = left[i][j - 1] + 1;
+                    } else {
+                        left[i][j] = 1; // If it's the first column, set left length to 1
+                    }
+                    // Calculate the length of contiguous 'X's above the current cell
+                    if (i != 0) {
+                        top[i][j] = top[i - 1][j] + 1;
+                    } else {
+                        top[i][j] = 1; // If it's the first row, set top length to 1
+                    }
+                }
+
+                // Find the minimum of top and left lengths for each 'X' cell
+                int minX = min(top[i][j], left[i][j]);
+                // Check if we can form a square of size minX with the current cell as bottom-right corner
+                while (minX) {
+                    int k = i - minX + 1; // Row index of the top-left corner of the candidate square
+                    int l = j - minX + 1; // Column index of the top-left corner of the candidate square
+                    // Check if the left and top sides of the candidate square are long enough
+                    if (left[k][j] >= minX && top[i][l] >= minX) {
+                        ans = max(ans, minX); // Update the answer if we found a larger square
+                        break;
+                    }
+                    minX--; // Decrease the size of the candidate square and continue checking
+                }
+            }
+        }
+        return ans; // Return the size of the largest subsquare
+    }
+};
+
+//{ Driver Code Starts.
+
+int main() {
+    int t;
+    cin >> t;
+    while (t--) {
+        int n;
+        cin >> n;
+        vector<vector<char>> a(n, vector<char>(n));
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) cin >> a[i][j];
+        }
+        Solution ob;
+        cout << ob.largestSubsquare(n, a) << "\n";
+    }
+}
+// } Driver Code Ends
+tc : O(n^3) sc : O(n^2).
