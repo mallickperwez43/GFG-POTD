@@ -1,0 +1,105 @@
+/*
+struct Node
+{
+	int data;
+	struct Node *next;
+	
+	Node(int x){
+	    data =x;
+	    next = NULL;
+	}
+};
+*/
+
+class Solution
+{
+    public:
+    // your task is to complete this function
+    
+    // Function to merge two sorted linked lists
+    Node* merge(Node *&head, Node* head1, Node* head2){
+        if(!head1) return head2; 
+        if(!head2) return head1; 
+    
+        Node* ans = new Node(0); // Dummy node to ease insertion
+        Node* temp = ans; // Pointer to traverse the merged list
+    
+        while(head1 && head2){
+            if(head1->data <= head2->data){
+                temp->next = head1;
+                head1 = head1->next;
+            }
+            else{
+                temp->next = head2;
+                head2 = head2->next;
+            }
+            temp = temp->next;
+        }
+    
+        // Add remaining nodes of the non-empty list
+        if (head1) temp->next = head1;
+        if (head2) temp->next = head2;
+    
+        head = ans->next; // Update the head of the merged list
+    
+        return head;
+    }
+    
+    // Function to reverse a linked list
+    void reverse(Node *&head){
+        Node *prev = NULL, *curr = head, *next;
+        while(curr){
+            next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+        head = prev; // Update the head to the new start of the reversed list
+    }
+    
+    // Function to split the linked list into two halves, ascending and descending
+    void splitList(Node *head, Node **Ahead, Node **Dhead){
+        *Ahead = new Node(0); // Dummy node for ascending list
+        *Dhead = new Node(0); // Dummy node for descending list
+        
+        Node *ascn = *Ahead; // Pointer to traverse ascending list
+        Node *dscn = *Dhead; // Pointer to traverse descending list
+        Node *curr = head; // Pointer to traverse the original list
+         
+        while(curr){
+            ascn->next = curr; // Add current node to ascending list
+            ascn = ascn->next;
+            curr = curr->next; // Move to the next node
+            
+            if(curr){
+                dscn->next = curr; // Add current node to descending list
+                dscn = dscn->next;
+                curr = curr->next; // Move to the next node
+            }
+        }
+        
+        ascn->next = NULL; // Terminate ascending list
+        dscn->next = NULL; // Terminate descending list
+        
+        *Ahead = (*Ahead)->next; // Remove the dummy node from ascending list
+        *Dhead = (*Dhead)->next; // Remove the dummy node from descending list
+    }
+    
+    // Function to sort the linked list
+    void sort(Node **head)
+    {
+        // Code here
+        
+        // Split the list into ascending and descending halves
+        Node *Ahead, *Dhead;
+        splitList(*head, &Ahead, &Dhead); 
+        
+        // Reverse the descending list
+        reverse(Dhead);
+        
+        // Merge the ascending and descending lists
+        *head = merge(*head, Ahead, Dhead); 
+        
+        return;
+    }
+};
