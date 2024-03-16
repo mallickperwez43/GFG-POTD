@@ -1,0 +1,41 @@
+method 1
+class Solution
+{
+    public:
+    // Function to delete a node without any reference to head pointer.
+    void deleteNode(Node *del_node)
+    {
+       // Your code here
+
+       // Copy the data from the next node to the current node
+       del_node -> data = del_node -> next -> data;
+       // Update the next pointer of the current node to skip the next node
+       del_node -> next = del_node -> next -> next;
+    }
+
+};
+
+
+method 2
+
+class Solution
+{
+    public:
+    // Function to delete a node without any reference to head pointer.
+    void deleteNode(Node *del_node)
+    {
+       // Your code here
+       if(del_node -> next != NULL){
+            // If the node to be deleted is not the last node in the list
+            Node *a = del_node;  // Pointer 'a' points to the node to be deleted
+            Node *b = del_node -> next;  // Pointer 'b' points to the next node
+            swap(a -> data, b -> data);  // Swap the data of nodes 'a' and 'b'
+            a -> next = a -> next -> next;  // Update 'a's next pointer to skip 'b' node
+            b -> next = NULL;  // Set 'b's next pointer to NULL
+       }
+    }
+
+};
+
+tc : O(1)
+sc : O(1)
