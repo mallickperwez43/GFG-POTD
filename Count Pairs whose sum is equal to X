@@ -1,0 +1,43 @@
+/*
+Structure of the node of the linked list is as
+struct Node
+{
+    int data;
+    struct Node* next;
+
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+};
+*/
+class Solution{
+  public:
+    // your task is to complete this function
+    int countPairs(struct Node* head1, struct Node* head2, int x) {
+        // Code here
+        unordered_set<int> seen;
+        int count = 0;
+
+        // Store elements of the second linked list in the hash set
+        struct Node* temp = head2;
+        while (temp != nullptr) {
+            seen.insert(temp->data);
+            temp = temp->next;
+        }
+
+        // Iterate through the elements of the first linked list
+        temp = head1;
+        while (temp != nullptr) {
+            // Check if the complementary element exists in the hash set
+            if (seen.find(x - temp->data) != seen.end()) {
+                count++;
+            }
+            temp = temp->next;
+        }
+
+        return count;
+    }
+};
+TC : O(n1 * n2)
+SC : O(n2) 
