@@ -1,0 +1,63 @@
+//User function Template for C++
+
+/*
+structure of the node of the binary tree is as
+struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
+
+    Node(int x)
+    {
+        data = x;
+        left = NULL;
+        right = NULL;
+    }
+};
+*/
+class Solution
+{
+public:
+    
+    // Function to check the deepest distance of the child node keeping the track of the sum of the nodes data
+    void dfs(Node *root, int &ans, int &maxCount, int curCount, int sum){
+        // if null
+        if(!root){
+            // if the current path has more nodes than the maximum 
+            // update ans as sum
+            // maxCount as the curCount
+            if(curCount > maxCount){
+                ans = sum;
+                maxCount = curCount;
+            }
+            // if both are equal then take the maximum
+            else if(curCount == maxCount){
+                ans = max(ans, sum);
+            }
+            return;
+        }
+        // simply add the data of root to sum and increment the count 
+        // call dfs on left and right
+        sum += root -> data;
+        curCount++;
+        dfs(root -> left, ans, maxCount, curCount, sum);
+        dfs(root -> right, ans, maxCount, curCount, sum);
+    }
+    
+    int sumOfLongRootToLeafPath(Node *root)
+    {
+        //code here
+        
+        // ans variable
+        // maxCount -> to store the maximum possible node in the tree (deepest node from root)
+        // sum -> to add and store data of nodes
+        // curCount -> the count of the nodes present in the current travelling path
+        int ans = INT_MIN , maxCount = 0 , sum = 0, curCount = 0;
+        dfs(root, ans, maxCount, curCount, sum);
+        return ans;
+    }
+};
+
+TC : O(n)
+SC : O(h) height of the tree
