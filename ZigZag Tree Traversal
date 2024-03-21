@@ -1,0 +1,80 @@
+//User function Template for C++
+/*Structure of the node of the binary tree is as
+struct Node {
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+};
+*/
+
+class Solution{
+public:
+    // Function to store the zigzag order traversal of the binary tree in a list.
+    vector<int> zigZagTraversal(Node* root) {
+        // Initialize an empty vector to store the result.
+        vector<int> ans;
+        
+        // If the root is NULL, return an empty list.
+        if(root == NULL)
+            return ans;
+        
+        // Initialize a boolean variable to track whether the current level is even or odd.
+        bool isEven = true;
+        
+        // Initialize a queue to perform level order traversal.
+        queue<Node*> q;
+        q.push(root); // Push the root node into the queue.
+        
+        // Loop until the queue is empty.
+        while(!q.empty()){
+            // Get the size of the queue which represents the number of nodes at the current level.
+            int size = q.size();
+            
+            // Initialize a temporary vector to store the nodes' values at the current level.
+            vector<int> temp;
+            
+            // Iterate over all the nodes at the current level.
+            for(int i = 0; i < size; i++){
+                // Get the front node of the queue.
+                Node* curNode = q.front();
+                q.pop(); // Remove the front node from the queue.
+                
+                // Push the value of the current node into the temporary vector.
+                temp.push_back(curNode -> data);
+                
+                // If the current node has a left child, push it into the queue.
+                if(curNode -> left){
+                    q.push(curNode -> left);
+                }
+                
+                // If the current node has a right child, push it into the queue.
+                if(curNode -> right){
+                    q.push(curNode -> right);
+                }
+            }
+            
+            // If the current level is odd, reverse the temporary vector to achieve zigzag order.
+            if(!isEven){
+                reverse(temp.begin(), temp.end());
+            }
+            
+            // Add the values from the temporary vector to the result vector.
+            for(int i = 0; i < temp.size(); i++){
+                ans.push_back(temp[i]);
+            }
+            
+            // Toggle the boolean variable to switch between even and odd levels.
+            isEven = !isEven;
+        }
+        
+        // Return the vector containing the zigzag order traversal of the binary tree.
+        return ans;
+    }
+};
+TC : O(N);
+SC : O(N);
