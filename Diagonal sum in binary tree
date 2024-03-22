@@ -1,0 +1,44 @@
+/* Complete the function below
+   Node is as follows:
+   struct Node {
+       int data;
+       Node *left, *right;
+   };
+*/
+
+class Solution {
+private:
+    
+    // Recursive function to perform modified BFS and calculate diagonal sums
+    void modifiedBFS(map<int, int> &levelSum, Node* cur, int level) {
+        if (!cur)
+            return;
+        
+        // Update the diagonal sum at the current level
+        levelSum[level] += cur->data;
+        
+        // Recursively process the left child with the next level and the right child with the same level
+        modifiedBFS(levelSum, cur->left, level + 1);
+        modifiedBFS(levelSum, cur->right, level);
+    }
+  
+public:
+    // Function to calculate diagonal sums of a binary tree
+    vector<int> diagonalSum(Node* root) {
+        // Create a map to store diagonal sums, where the key is the level and the value is the sum
+        map<int, int> levelSum;
+        
+        // Perform modified BFS to calculate diagonal sums
+        modifiedBFS(levelSum, root, 0);
+        
+        // Store diagonal sums in a vector
+        vector<int> ans;
+        for (auto it : levelSum) {
+            ans.push_back(it.second);
+        }
+        
+        return ans;
+    }
+};
+TC : O(n)
+SC : O(n)
