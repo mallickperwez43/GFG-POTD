@@ -1,0 +1,28 @@
+class Solution {
+  public:
+    vector<int> Series(int n) {
+        // Code here
+        // Create a vector to store Fibonacci series
+        vector<int> dp(n + 1);
+        // Define a constant to handle modulo operations
+        const int mod = 1e9+7;
+        // Base cases for Fibonacci series
+        dp[0] = 0;
+        dp[1] = 1;
+        
+        // If n is 0, return the base case vector
+        if(n == 0)
+            return dp;
+        
+        // Calculate Fibonacci series for remaining numbers
+        for(int i = 2 ; i <= n ; i++){
+            dp[i] = (dp[i - 1] + dp[i - 2]) % mod; // Calculate the i-th Fibonacci number modulo mod
+        }
+        
+        // Return the vector containing Fibonacci series
+        return dp;
+    }
+};
+
+TC : O(N)
+SC : O(N)
