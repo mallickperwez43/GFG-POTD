@@ -1,0 +1,53 @@
+// method 1 - recursion
+//User function Template for C++
+
+class Solution{
+public:
+    stack<int> insertAtBottom(stack<int> st,int x){
+        // If the stack is empty, simply push the element
+        if (st.empty()) {
+            st.push(x);
+            return st;
+        }
+    
+        // Store the top element of the stack
+        int topElement = st.top();
+        st.pop();
+    
+        // Recursively insert x at the bottom
+        st = insertAtBottom(st, x);
+    
+        // Push the top element back onto the stack
+        st.push(topElement);
+        
+        return st; // Return the modified stack
+    }
+};
+
+// method 2 - auxilary stack
+
+/User function Template for C++
+
+class Solution{
+public:
+    stack<int> insertAtBottom(stack<int> st,int x){
+        stack<int> helper;
+        while(!st.empty()){
+            int top = st.top();
+            st.pop();
+            helper.push(top);
+        }
+        
+        st.push(x);
+        while(!helper.empty()){
+            int top = helper.top();
+            helper.pop();
+            st.push(top);
+        }
+        
+        return st;
+    }
+};
+
+TC : O(n)
+SC : O(n)
