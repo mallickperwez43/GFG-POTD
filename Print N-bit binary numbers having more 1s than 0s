@@ -1,0 +1,34 @@
+class Solution{
+private:
+    // Recursive function to generate n-bit binary numbers
+    void generateNumbers(int n, int ones, int zeros, string prefix, vector<string> &ans){
+        // Base case: If the prefix has reached the desired length
+        if(prefix.length() == n){
+            ans.push_back(prefix); // Add the prefix to the answer
+            return; // Return from the function
+        }
+        
+        // If there are more ones than zeros, we can add both '1' and '0'
+        if(ones > zeros){
+            // Recursively generate numbers by adding '1' and '0'
+            generateNumbers(n, ones + 1, zeros, prefix + '1', ans); // Add '1'
+            generateNumbers(n, ones, zeros + 1, prefix + '0', ans); // Add '0'
+        }
+        else{ // Otherwise, we can only add '1'
+            // Recursively generate numbers by adding '1' only
+            generateNumbers(n, ones + 1, zeros, prefix + '1', ans); // Add '1'
+        }
+    }
+public: 
+    // Function to generate all n-bit binary numbers
+    vector<string> NBitBinary(int n)
+    {
+        vector<string> ans; // Vector to store the generated numbers
+        // Call the recursive function to generate numbers starting with '1'
+        generateNumbers(n, 1, 0, "1", ans);
+        return ans; // Return the generated numbers
+    }
+};
+
+TC : O(2 ^ n . n)
+SC : O(2 ^ n . n)
