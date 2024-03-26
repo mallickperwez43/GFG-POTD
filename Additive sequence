@@ -1,0 +1,88 @@
+class Solution {
+private:
+    // Function to calculate the sum of two strings representing numbers
+    string calculateSum(string num1, string num2) {
+        string sum = "";
+        int i = num1.length() - 1, j = num2.length() - 1, carry = 0;
+        while (i >= 0 && j >= 0) {
+            int digitSum = (num1[i] - '0') + (num2[j] - '0') + carry;
+            sum += (digitSum % 10 + '0'); // Add the digit to the sum
+            carry = digitSum / 10; // Update the carry for the next digit
+            i--;
+            j--;
+        }
+
+        // Add remaining digits of num1 to the sum
+        while (i >= 0) {
+            int digitSum = (num1[i] - '0') + carry;
+            sum += (digitSum % 10 + '0');
+            carry = digitSum / 10;
+            i--;
+        }
+
+        // Add remaining digits of num2 to the sum
+        while (j >= 0) {
+            int digitSum = (num2[j] - '0') + carry;
+            sum += (digitSum % 10 + '0');
+            carry = digitSum / 10;
+            j--;
+        }
+
+        // Add the final carry if present
+        if (carry) {
+            sum += (carry + '0');
+        }
+
+        // Reverse the sum to get the correct order
+        reverse(sum.begin(), sum.end());
+
+        return sum;
+    }
+
+    // Recursive helper function to check if the sequence is additive
+    bool isAdditiveSequenceHelper(string num1, string num2, string remaining) {
+        // Calculate the sum of num1 and num2
+        string sum = calculateSum(num1, num2);
+        int i = 0, j = 0;
+        // Compare the sum with the remaining part of the string
+        while (i < remaining.length() && j < sum.length()) {
+            // If any character mismatches, return false
+            if (remaining[i] != sum[j])
+                return false;
+            i++;
+            j++;
+        }
+
+        // If the sum does not match the remaining string length, return false
+        if (j != sum.length())
+            return false;
+
+        // If the remaining string is empty, return true
+        if (i == remaining.length())
+            return true;
+
+        // Recur with updated parameters
+        remaining = remaining.substr(i);
+        return isAdditiveSequenceHelper(num2, sum, remaining);
+    }
+
+public:
+    // Main function to check if the given string contains an additive sequence
+    bool isAdditiveSequence(string n) {
+        for (int i = 0; i < n.length() / 2; i++) {
+            for (int j = i + 1; j < n.length() - 1; j++) {
+                // Extract firstNum, secondNum, and remaining parts of the string
+                string firstNum = n.substr(0, i + 1);
+                string secondNum = n.substr(i + 1, j - i);
+                string remaining = n.substr(j + 1);
+                // Check if the sequence is additive using the helper function
+                if (isAdditiveSequenceHelper(firstNum, secondNum, remaining))
+                    return true;
+            }
+        }
+        return false; // If no additive sequence is found, return false
+    }
+};
+
+TC : O(N^3)
+SC : O(N)
