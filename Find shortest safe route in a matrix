@@ -1,0 +1,78 @@
+//User function Template for C++
+
+class Solution
+{
+public:
+    int findShortestPath(vector<vector<int>> &mat)
+    {
+        // code here
+        int row = mat.size();
+        int col = mat[0].size();
+        
+        // step 1 : make new matrix to fill zeros
+
+        vector<vector<int>> arr(row, vector<int>(col, 1));
+
+        // possible direction -> up ,  down , right, leftl
+        int rowDirc[] = {-1, 0, 1, 0};
+        int colDirc[] = {0, 1, 0, -1};
+
+        // traverse the arr and set zeros
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < col; j++){
+                if(mat[i][j] == 0){
+                    arr[i][j] = 0;
+                    
+                    // set adjecent as zero too
+                    for(int k = 0; k < 4; k++){
+                        int newRow = rowDirc[k] + i;
+                        int newCol = colDirc[k] + j;
+                        if(newRow >=0 and newRow < row and newCol >= 0 and newCol < col){
+                            arr[newRow][newCol] = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        // step 2 : make visited array and start pushing starting coordinates in queue
+        vector<vector<int>> vis(row, vector<int>(col, 0));
+
+        // a queue for BFS
+        queue<pair<int, pair<int, int>>> q; // pair of {distance, {row, col}}
+        for(int i = 0; i < row; i++){
+            // push starting co ordinates in queue
+            if(arr[i][0])
+                q.push({1, {i, 0}});
+        }
+        // step 3 : BFS
+        while(q.size()){
+            auto temp = q.front();
+            q.pop();
+
+            int i = temp.second.first; // row
+            int j = temp.second.second; // col
+            int dis = temp.first;
+                
+            // reached end
+            if(j == col - 1)
+                return dis;
+  
+            vis[i][j] = 1; // mark visited
+
+            // check all direction
+            for(int k = 0; k < 4; k++){
+                int nr = rowDirc[k] + i;
+                int nc = colDirc[k] + j;
+                if(nr >= 0 and nr < row and nc >= 0 and nc < col and vis[nr][nc] == 0 and arr[nr][nc] == 1){
+                    q.push({dis + 1,{nr, nc}}); // next level
+                }
+            }            
+        }
+        
+        // if no path found 
+        return -1;
+    }
+};
+TC : O(r * c)
+SC : O(r * c)
