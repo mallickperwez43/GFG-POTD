@@ -1,0 +1,131 @@
+// method 1 -> Floyd Warshell Algorithm
+
+class Solution {
+public:
+    int findCity(int n, int m, vector<vector<int>>& edges, int distanceThreshold) {
+        // Initialize a matrix to store distances between cities,
+        // initially set to maximum distances.
+        vector<vector<int>> dist(n, vector<int>(n, INT_MAX));
+        
+        // Fill in the distances from given edges.
+        for(auto it : edges){
+            dist[it[0]][it[1]] = it[2];
+            dist[it[1]][it[0]] = it[2];
+        }
+        
+        // Mark diagonal elements as 0 (distance from a city to itself).
+        for(int i = 0; i < n; i++) dist[i][i] = 0;
+        
+        // Floyd Warshall Algorithm to find shortest distances between all pairs of cities.
+        // TC: O(n^3) - cubic time complexity due to the three nested loops.
+        for(int k = 0; k < n; k++){
+            for(int i = 0; i < n; i++){
+                for(int j = 0 ; j < n; j++){
+                    if(dist[i][k] == INT_MAX or dist[k][j] == INT_MAX)
+                        continue;
+                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+                }
+            }
+        }
+        
+        // Traverse the distance matrix to find the city with the minimum reachable cities.
+        int cntCity = n; // Initialize with total cities
+        int cityNo = -1; // Initialize the city number
+        for(int city = 0; city < n; city++){
+            int cnt = 0;
+            // Count the number of cities reachable within the distance threshold.
+            for(int adjCity = 0; adjCity < n; adjCity++){
+                if(dist[city][adjCity] <= distanceThreshold)
+                    cnt++;
+            }
+            
+            // Update cntCity and cityNo if a city has fewer reachable cities.
+            if(cnt <= cntCity){
+                cntCity = cnt;
+                cityNo = city;
+            }
+        }
+        return cityNo;
+    }
+};
+
+TC : O(N ^ 3)
+SC : O(N ^ 2)
+
+// method 2 -> Dijkstra Algoritm
+
+class Solution {
+private:
+    // Function to perform Dijkstra's algorithm
+    // TC: O(V*log(V) + E), where V is the number of vertices and E is the number of edges
+    // SC: O(V), for the distance array
+    int dijkstra(int n, vector<pair<int, int>> adj[], int k, int src){
+        priority_queue<int> q;
+        q.push(src);
+        
+        vector<int> dist(n, INT_MAX); // Initializing distances from source vertex to all other vertices as infinity
+        dist[src] = 0; // Distance from source vertex to itself is 0
+        
+        // Dijkstra's algorithm loop
+        while(!q.empty()){
+            int node = q.top();
+            q.pop();
+            
+            // Iterating through all neighbors of the current node
+            for(auto x : adj[node]){
+                int nbr = x.first; // Neighbor vertex
+                int wt = x.second; // Weight of the edge from current node to neighbor
+                
+                // If updating the distance to neighbor vertex gives a shorter path
+                if(dist[nbr] > dist[node] + wt){
+                    dist[nbr] = dist[node] + wt; // Update the distance
+                    q.push(nbr); // Push the neighbor to the priority queue
+                } 
+            }
+        }
+        
+        // Counting the number of cities within the distance threshold
+        int c = 0;
+        for(int i = 0; i < n; i++){
+            if(dist[i] <= k)
+                c++;
+        }
+        return c;
+    }
+    
+public:
+    // Function to find the city with the smallest index that has the minimum number of cities within the distance threshold
+    // TC: O(V*(V*log(V) + E)), where V is the number of vertices and E is the number of edges
+    // SC: O(V^2), for the adjacency list and distance array
+    int findCity(int n, int m, vector<vector<int>>& edges, int distanceThreshold) {
+        vector<pair<int, int>> adj[n]; // Adjacency list to represent the graph
+        
+        // Constructing the adjacency list from the given edges
+        for(int i = 0; i < edges.size(); i++){
+            adj[edges[i][0]].push_back({edges[i][1], edges[i][2]});
+            adj[edges[i][1]].push_back({edges[i][0], edges[i][2]});
+        }
+        
+        // Array to store the count of cities within the distance threshold for each city
+        vector<int> dis(n, 0);
+        
+        // Performing Dijkstra's algorithm for each city to find the count of cities within the distance threshold
+        for(int i = 0; i < n; i++){
+            dis[i] = dijkstra(n, adj, distanceThreshold, i);
+        }
+        
+        // Finding the city with the minimum count of cities within the distance threshold
+        int ans = INT_MAX;
+        int idx = -1;
+        for(int i = 0; i < n; i++){
+            if(ans >= dis[i]){
+                ans = dis[i];
+                idx = i;
+            }
+        }
+        return idx; // Returning the index of the city
+    }
+};
+
+TC : O(N *dijkstra ki TC) 
+SC :O(N ^ 2)
