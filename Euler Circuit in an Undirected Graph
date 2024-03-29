@@ -1,0 +1,20 @@
+class Solution {
+public:
+    // Function to check if an Eulerian circuit exists in the graph
+    // v: number of vertices
+    // adj: adjacency list representation of the graph
+    // Returns true if an Eulerian circuit exists, false otherwise
+    bool isEularCircuitExist(int v, vector<int> adj[]) {
+        // Iterate through all vertices
+        for (int i = 0; i < v; i++) {
+            // If the degree of any vertex is odd, return false
+            if (adj[i].size() % 2 != 0)
+                return false;
+        }
+        // If all vertices have even degrees, return true
+        return true;
+    }
+};
+
+TC : O(V)
+SC : O(1)
