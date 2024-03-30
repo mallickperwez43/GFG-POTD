@@ -1,0 +1,23 @@
+class Solution {
+  public:
+    int findMaxForN(Node* root, int n) {
+        // code here
+        if(!root)
+            return -1;
+        Node* maxi = NULL;
+        while(root != NULL){
+            if(root -> key <= n){
+                maxi = root;
+                root = root -> right;
+            }
+            else{
+                root = root -> left;
+            }
+        }
+        
+        return maxi ? maxi -> key : -1;
+    }
+};
+
+TC : O(H)
+SC : O(1)
