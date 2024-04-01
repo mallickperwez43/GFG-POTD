@@ -1,0 +1,101 @@
+class Solution {
+  private:
+    // This function merges two sorted arrays and counts the inversions.
+    int merge(vector<int> &in, int low, int mid, int high){
+        int inv_count = 0;
+    
+        // Calculate the lengths of two subarrays
+        int len1 = mid - low + 1;
+        int len2 = high - mid;
+
+        // Create temporary arrays
+        int a[len1];
+        int b[len2];
+        int index = low;
+        
+        // Copy data to temporary arrays
+        for(int i = 0; i < len1; i++){
+            a[i] = in[index];
+            index++;
+        } 
+
+        for(int i = 0; i < len2; i++){
+            b[i] = in[index];
+            index++;
+        }
+
+        // Merge the temporary arrays back into in[]
+        int i = 0 , j = 0, k = low;
+        while(i < len1 && j < len2){
+            if(a[i] <= b[j]){
+                in[k] = a[i];
+                i++;
+                k++;
+            }
+            else{
+                in[k] = b[j];
+                inv_count += len1 - i; // Count inversions
+                j++;
+                k++;
+            }
+        } 
+        // Copy the remaining elements of a[], if there are any
+        while(i < len1){
+            in[k] = a[i];
+            i++;
+            k++;
+        }
+        // Copy the remaining elements of b[], if there are any
+        while(j < len2){
+            in[k] = b[j];
+            j++;
+            k++;
+        } 
+
+        return inv_count;
+    }
+
+    // Merge sort function to count inversions
+    int mergeSort(vector<int> &in, int s, int e){
+        int inv_count = 0;
+
+        if(s < e){
+            int mid = s + (e - s) / 2;
+
+            // Count inversions in left and right subarrays
+            inv_count += mergeSort(in, s, mid);
+            inv_count += mergeSort(in, mid + 1, e);
+
+            // Merge the two sorted halves and count inversions
+            inv_count += merge(in, s, mid, e);
+        }
+        return inv_count;
+    }
+      
+    // Inorder traversal to get the elements of the BST in sorted order
+    void inorder(Node* root, vector<int>& nodes) {
+        if(root == NULL) {
+            return;
+        }
+        
+        inorder(root -> left, nodes);
+        nodes.push_back(root -> data);
+        inorder(root -> right, nodes);
+    } 
+    
+  public:
+
+    /*You are required to complete below function */
+    // Function to find the count of pairs violating BST property
+    int pairsViolatingBST(int n, Node *root) {
+        // your code goes here
+        vector<int> in;
+        inorder(root, in);
+        
+        // Count inversions using merge sort
+        return mergeSort(in, 0, in.size() - 1);
+    }
+};
+
+TC : O(n log n)
+SC : O(n)
