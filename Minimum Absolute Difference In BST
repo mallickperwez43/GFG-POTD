@@ -1,0 +1,102 @@
+// Method 1 - > Recursion
+
+class Solution
+{
+private:
+    // Recursive function to perform inorder traversal of the binary search tree
+    // and calculate the minimum absolute difference between any two nodes.
+    void inorderUsingPrev(Node* root, int &ans, int &previous){
+        // Base case: If the current node is null, return
+        if(!root)
+           return;
+        
+        // Recursively traverse the left subtree
+        inorderUsingPrev(root -> left, ans, previous);
+        
+        // Check if there was a previous node visited
+        if(previous != -1)
+            // If yes, calculate the absolute difference between the current node and the previous node
+            // Update the minimum absolute difference if necessary
+            ans = min(ans, abs(root -> data - previous));
+        
+        // Update the previous node value to the current node value
+        previous = root -> data;
+        
+        // Recursively traverse the right subtree
+        inorderUsingPrev(root -> right, ans, previous);
+    }
+
+public:
+    // Public method to calculate the minimum absolute difference between any two nodes in the binary search tree
+    int absolute_diff(Node *root)
+    {
+        // Initialize the minimum absolute difference to the maximum possible integer value
+        int ans = INT_MAX;
+        // Initialize the value of the previous node to -1
+        // (Since the minimum value of a node in the binary search tree can be 0 or positive)
+        int previous = -1;
+        
+        // Call the recursive function to perform inorder traversal and calculate the minimum absolute difference
+        inorderUsingPrev(root, ans, previous);
+        
+        // Return the minimum absolute difference
+        return ans;
+    }
+};
+
+// Method 2 -> Stack
+
+class Solution
+{
+private:
+    // Function to perform inorder traversal of the binary search tree using a stack
+    // and calculate the minimum absolute difference between any two nodes.
+    void inorderUsingStack(Node* root, int &ans, int &previous) {
+        // Create a stack to store nodes
+        stack<Node*> nodeStack;
+        // Initialize 'current' pointer to the root node
+        Node* current = root;
+
+        // Traverse the tree until 'current' becomes null and the stack becomes empty
+        while (current != nullptr || !nodeStack.empty()) {
+            // Traverse left subtree and push nodes onto the stack
+            while (current != nullptr) {
+                nodeStack.push(current);
+                current = current->left;
+            }
+
+            // Current is null, so pop a node from the stack
+            current = nodeStack.top();
+            nodeStack.pop();
+
+            // Check if there was a previous node visited
+            if (previous != -1)
+                // If yes, calculate the absolute difference between the current node and the previous node
+                // Update the minimum absolute difference if necessary
+                ans = min(ans, abs(current->data - previous));
+            
+            // Update the previous node value to the current node value
+            previous = current->data;
+
+            // Move to the right subtree
+            current = current->right;
+        }
+    }
+
+public:
+    // Public method to calculate the minimum absolute difference between any two nodes in the binary search tree
+    int absolute_diff(Node *root)
+    {
+        // Initialize the minimum absolute difference to the maximum possible integer value
+        int ans = INT_MAX;
+        // Initialize the value of the previous node to -1
+        // (Since the minimum value of a node in the binary search tree can be 0 or positive)
+        int previous = -1;
+        
+        // Call the function to perform inorder traversal using a stack and calculate the minimum absolute difference
+        inorderUsingStack(root, ans, previous);
+        
+        // Return the minimum absolute difference
+        return ans;
+    }
+};
