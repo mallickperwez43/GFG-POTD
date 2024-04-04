@@ -1,0 +1,77 @@
+// method 1 : DP
+
+class Solution
+{
+public:
+    // Function to find sum of all possible substrings of the given string.
+    long long sumSubstrings(string s){
+        
+        // Initialize a variable to store the modulo value.
+        long long mod = 1e9+7;
+        
+        // Get the length of the input string.
+        int n = s.size();
+        
+        // Initialize a vector to store intermediate results.
+        // dp[i] will store the sum of all substrings ending at index i.
+        vector<long long> dp(n, 0);
+        
+        // Initialize dp[0] with the value of the first character in the string.
+        dp[0] = s[0] - '0';
+        
+        // Initialize the answer with the sum of substrings ending at index 0.
+        long long ans = dp[0];
+        
+        // Loop through the string starting from the second character.
+        for(int i = 1; i < n; i++){
+            // Calculate dp[i] using the formula:
+            // dp[i] = (dp[i - 1] * 10) + ((s[i] - '0') * (i + 1))
+            // (dp[i - 1] * 10) represents appending s[i] to all substrings ending at index i - 1.
+            // ((s[i] - '0') * (i + 1)) represents creating new substrings ending at index i.
+            // Take modulo mod to prevent overflow.
+            dp[i] = ((dp[i - 1] * 10) % mod + ((s[i] - '0') * (i + 1)) % mod) % mod;
+            
+            // Update the answer by adding dp[i] to it.
+            ans = (ans + dp[i]) % mod;
+        }
+        
+        // Return the final answer.
+        return ans;
+    }
+};
+TC : O(n)
+SC : O(n)
+
+// method 2 -> variable
+
+class Solution
+{
+public:
+    // Function to find sum of all possible substrings of the given string.
+    long long sumSubstrings(string s){
+        
+        // Initialize variables: ans to store the final answer,
+        // multiplier to keep track of the value of previous substring,
+        // mod to store the modulo value.
+        long long ans = 0, multiplier = 0, mod = 1e9+7;
+        
+        // Iterate through each character of the input string.
+        for(int i = 0; i < s.length(); i++){
+            // Calculate the value of the current substring.
+            long long cur = (multiplier * 10) % mod + ((s[i] - '0') * (i + 1)) % mod;
+            
+            // Update the multiplier for the next iteration.
+            multiplier = cur;
+            
+            // Update the final answer by adding the value of the current substring.
+            ans = (ans + cur) % mod;
+        }
+        
+        // Return the final answer.
+        return ans;
+    }
+};
+
+
+TC : O(n)
+SC : O(1)
