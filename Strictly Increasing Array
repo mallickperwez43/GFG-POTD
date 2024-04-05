@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int min_operations(vector<int>& nums) {
+        int n = nums.size(); // Get the size of the input vector 'nums'
+        int temp = 1; // Initialize a variable to keep track of the maximum length of increasing subsequences
+        vector<int> dp(n, 1); // Initialize a dynamic programming array 'dp' with default values of 1
+        
+        // Iterate through each element of the input vector 'nums'
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < i; j++){
+                // Check if the difference between the current element and previous elements satisfies the condition
+                if(nums[i] - nums[j] >= i - j){
+                    dp[i] = max(dp[i], dp[j] + 1); // Update the length of increasing subsequence at index 'i'
+                    temp = max(dp[i], temp); // Update 'temp' with the maximum length of increasing subsequences
+                }
+            }
+        }
+        // Return the number of elements to be removed to form the longest increasing subsequence
+        return n - temp;
+    }
+};
+TC : O(n^2)
+SC : O(n)
