@@ -1,0 +1,55 @@
+DP 
+class Solution{
+    public:
+    // Helper function to calculate the maximum dot product recursively
+    // i, j: current indices for arrays a and b respectively
+    // n, m: size of arrays a and b respectively
+    // a[]: first array
+    // b[]: second array
+    // diff: difference between the sizes of a[] and b[]
+    // dp: memoization table for dynamic programming
+    int helper(int i, int j, int n, int m, int a[], int b[], int diff, vector<vector<int>> &dp){
+        // Base case: if either of the indices reaches the end of their respective array
+        if(i == n or j == m)
+            return 0;
+        
+        // If the result is already calculated, return it from dp table
+        if(dp[i][j] != -1)
+            return dp[i][j];
+        
+        int sum1 = 0, sum2 = 0;
+        
+        // If there's a difference remaining, skip the current element from array a
+        if(diff){
+            sum1 = helper(i + 1, j, n, m, a, b, diff - 1, dp);
+        }
+        
+        // Calculate the current dot product and move to the next elements in both arrays
+        sum2 = a[i] * b[j] + helper(i + 1, j + 1, n, m, a, b, diff, dp);
+        
+        // Store the maximum of the two sums in the dp table for memoization
+        return dp[i][j] = max(sum1, sum2);
+    }
+    
+    // Function to calculate the maximum dot product
+    int maxDotProduct(int n, int m, int a[], int b[]) 
+    { 
+        // Initialize a memoization table with -1
+        vector<vector<int>> dp(n, vector<int>(m, -1));
+        // Call the helper function to compute the maximum dot product recursively
+        return helper(0, 0, n, m, a, b, n - m, dp);
+    } 
+};
+
+// Add comments for time complexity and space complexity
+
+// Time Complexity (TC):
+// The time complexity of the recursive function `helper` can be analyzed in terms of the number of unique states.
+// Since each call to `helper` only depends on the current indices i and j, the total number of unique states is bounded by n*m, where n and m are the sizes of arrays a[] and b[] respectively.
+// Thus, the time complexity of the recursive solution is O(n*m).
+
+// Space Complexity (SC):
+// The space complexity of the recursive solution mainly comes from the memoization table (dp).
+// The size of the memoization table is n*m since it stores results for all unique states.
+// Additionally, there is auxiliary space used by the call stack due to recursive calls, which can go up to the depth of the recursion tree, bounded by n+m.
+// Therefore, the overall space complexity is O(n*m) + O(n+m), which simplifies to O(n*m).
