@@ -1,0 +1,39 @@
+class Solution {
+public:
+    // Recursive helper function to find the maximum amount
+    // i: starting index of the subarray
+    // j: ending index of the subarray
+    // arr: array of coins
+    // dp: dynamic programming memoization table
+    long long helper(int i, int j, int arr[], vector<vector<long long>> &dp) {
+        // Base case: if i > j, there are no coins left in the subarray
+        if (i > j)
+            return 0;
+        
+        // If the value for the current subarray is already calculated, return it
+        if (dp[i][j] != -1)
+            return dp[i][j];
+        
+        // Calculate the sum of coins if the current player picks the first coin
+        // and considers the subarray starting from i+2
+        int sum1 = arr[i] + min(helper(i + 2, j, arr, dp), helper(i + 1, j - 1, arr, dp));
+        
+        // Calculate the sum of coins if the current player picks the last coin
+        // and considers the subarray ending at j-2
+        int sum2 = arr[j] + min(helper(i + 1, j - 1, arr, dp), helper(i, j - 2, arr, dp));
+        
+        // Choose the maximum of the two sums
+        return dp[i][j] = max(sum1, sum2);
+    }
+    
+    // Function to find the maximum amount the first player can win
+    // n: number of coins
+    // arr: array of coins
+    long long maximumAmount(int n, int arr[]) {
+        // Initialize a memoization table to store calculated values
+        vector<vector<long long>> dp(n, vector<long long>(n, -1));
+        
+        // Call the recursive helper function to find the maximum amount
+        return helper(0, n - 1, arr, dp);
+    }
+};
