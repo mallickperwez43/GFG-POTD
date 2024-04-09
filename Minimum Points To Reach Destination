@@ -1,0 +1,35 @@
+class Solution {
+public:
+    // Recursive helper function to calculate minimum points needed
+    int helper(int i, int j, int m, int n, std::vector<std::vector<int>> &points, std::vector<std::vector<int>> &dp) {
+        // base case: if reached the bottom right corner
+        if (i == m - 1 && j == n - 1)
+            return 1 - points[i][j]; // return the minimum points needed to survive
+        
+        // boundary condition: if out of bounds
+        if (i == m || j == n)
+            return INT_MAX; // return maximum integer if out of bounds
+        
+        // if already computed, return the stored value
+        if (dp[i][j] != -1)
+            return dp[i][j];
+        
+        // recursively find minimum points needed for next steps
+        int a = helper(i + 1, j, m, n, points, dp); // go down
+        int b = helper(i, j + 1, m, n, points, dp); // go right
+        
+        // calculate the minimum points needed for the current cell
+        return dp[i][j] = std::max(1, std::min(a, b) - points[i][j]);
+    }
+    
+    // Function to find the minimum points needed
+    int minPoints(int m, int n, std::vector<std::vector<int>> points) {
+        // Initialize DP array with -1
+        std::vector<std::vector<int>> dp(m, std::vector<int>(n, -1));
+        
+        // Call helper function to get the result
+        return helper(0, 0, m, n, points, dp);
+    } 
+};
+TC : O(m * n)
+SC : O(m * n)
