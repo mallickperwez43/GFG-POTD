@@ -1,0 +1,40 @@
+class Solution {
+public:
+    long long pairAndSum(int n, long long arr[]) {
+        // Create a vector to store the count of set bits at each position
+        vector<int> bits(32, 0); // Assuming 32-bit integers
+        
+        // Iterate through each element in the array
+        for(int i = 0; i < n; i++){
+            int temp = arr[i];
+            int j = 0;
+            
+            // Count the number of set bits in the binary representation of the current element
+            while(temp){
+                if(temp & 1)
+                    bits[j]++; // Increment the count of set bits at position j
+                
+                j++;
+                temp = temp >> 1; // Right shift to check the next bit
+            }
+        }
+        
+        // Calculate the total number of pairs and their contribution to the sum
+        long long ans = 0;
+        for(int i = 0; i < 32; i++){
+            long long temp = bits[i]; // Get the count of set bits at position i
+            temp--; // Decrement by 1 to exclude the single occurrences
+            
+            // Calculate the number of pairs formed by the set bits at position i
+            long long pairs = (temp*(temp + 1) / 2);
+            
+            // Add the contribution of pairs at position i to the overall sum
+            ans += (pairs*(long long)pow(2, i)); // Multiply by 2^i to adjust the position
+            
+            // Repeat this process for each bit position
+        }
+        return ans; // Return the final sum
+    }
+};
+TC : O(n)
+SC : O(1)
