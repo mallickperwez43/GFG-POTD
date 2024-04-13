@@ -1,0 +1,28 @@
+class Solution {
+public:
+    // Function to reverse the bits of a given integer
+    // Time Complexity: O(log n), where n is the number of bits in the integer x.
+    //                   The while loop runs for the number of bits in x.
+    // Space Complexity: O(1), constant space is used.
+    long long reversedBits(long long x) {
+        long long ans = 0; // Variable to store the result
+        long long i = 31;  // Start from the 31st bit (0-indexed)
+        
+        // Loop until x becomes 0
+        while(x){
+            // Calculate the bit at position i and add it to the result
+            ans += (long long)pow(2, i) * (x & 1);
+            
+            // Move to the next bit
+            i--;
+            
+            // Right shift x to get the next bit
+            x = x >> 1;
+        }
+        
+        // Return the reversed bits
+        return ans;
+    }
+};
+TC : O(log n)
+SC : O(1)
