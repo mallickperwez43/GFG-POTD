@@ -1,0 +1,62 @@
+// method 1 sort and binary search
+// User function Template for C++
+class Solution {
+  public:
+    vector<int> countElements(vector<int> &a, vector<int> &b, int n, vector<int> &query,
+                              int q) {
+        // Your code goes here;
+        vector<int> ans;
+        sort(b.begin(), b.end());
+        
+        for(int i = 0; i < q; i++){
+            int x = query[i];
+            int element = a[x];
+            int index = upper_bound(b.begin(), b.end(), element) - b.begin();
+            ans.push_back(index);
+        }
+        return ans;
+    }
+};
+
+TC : O(nlogn)
+SC : O(n)
+
+// method 2
+class Solution {
+  public:
+    vector<int> countElements(vector<int> &a, vector<int> &b, int n, vector<int> &query,
+                              int q) {
+        // Your code goes here;
+        int mx = -1;
+        // find maximum element
+        for(int i = 0; i < n; i++)
+            mx = max(mx, b[i]);
+        
+        // make a map type DSb
+        vector<int> heap(mx + 1, 0);
+        
+        // fill heap with number of their occurances
+        for(int i = 0; i < n; i++){
+            heap[b[i]]++;
+        }
+        
+        // fill the heap with previous too
+        for(int i = 1; i <= mx; i++){
+            heap[i] += heap[i - 1];
+        }
+        
+        vector<int> ans;
+        
+        for(int i = 0; i < q; i++){
+            if(a[query[i]] > mx)
+                ans.push_back(n);
+            else
+                ans.push_back(heap[a[query[i]]]);
+        }
+        
+        return ans;
+    }
+};
+
+TC : O(max(max,n, q))
+SC : O(max)
