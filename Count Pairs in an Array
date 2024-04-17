@@ -1,0 +1,94 @@
+class Solution{
+    private:
+    int merge(int arr[], int low, int mid, int high){
+        int inv_count = 0;
+        
+        // get the lengths of the temp arrays
+        int len1 = mid - low + 1;
+        int len2 = high - mid;
+        
+        // make two temp arrays of following size;
+        int a[len1];
+        int b[len2];
+        int index = low;  // index for arr array
+        
+        // copy the elements in both the temporary arrays
+        for(int i = 0; i < len1; i++){
+            a[i] = arr[index];
+            index++;
+        }
+        
+        for(int i = 0; i < len2; i++){
+            b[i] = arr[index];
+            index++;
+        }
+        
+        // merge two sorted arrays
+        
+        int i = 0, j = 0, k = low;  // pointers for a[] , b[], arr[]
+        
+        while(i < len1 and j < len2){
+            if(a[i] <= b[j]){
+                arr[k] = a[i];
+                i++;
+            }
+            else{
+                arr[k] = b[j];
+                inv_count += len1 - i;      // since a[] is sorted and we just found that a[i] > b[j]
+                                            // so for every i in the remaining a[] will be smaller so all forms 
+                                            // inversion
+                j++;
+            }
+            k++;
+        }
+        
+        while(i < len1){
+            arr[k] = a[i];
+            i++;
+            k++;
+        }
+        
+        while(j < len2){
+            arr[k] = b[j];
+            j++;
+            k++;
+        }
+        
+        return inv_count;
+    }
+    
+    int mergeSort(int arr[], int s, int e){
+        int inv_count = 0;
+        
+        // perform merge sort while calculating
+        // the inversion count
+        if(s < e){
+            int mid = s + (e - s) / 2;
+            
+            inv_count += mergeSort(arr , s, mid);
+            inv_count += mergeSort(arr, mid + 1, e);
+            inv_count += merge(arr, s, mid, e);
+        }
+        return inv_count;
+    }
+    
+    int getInversionCount(int arr[], int n){
+        return mergeSort(arr, 0, n - 1);
+    }
+    
+    public:
+    int countPairs(int arr[] , int n ) 
+    {
+        // Your code goes here
+        
+        // preprocess the array
+        for(int i = 0; i < n; i++){
+            arr[i] *= i;
+        }
+        
+        return getInversionCount(arr, n);
+    }
+};
+
+TC : O(nlogn)
+SC : O(n)
