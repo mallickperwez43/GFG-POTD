@@ -1,0 +1,31 @@
+// Cycle Sort
+class Solution {
+  public:
+    //Function to find two repeated elements.
+    vector<int> twoRepeated (int arr[], int n) {
+        // Your code here
+        vector<int> ans;
+        
+        // the size is 2 more than n
+        int size = n + 2;
+        
+        for(int i = 0 ; i < size; i++){
+            // arr[i] is used as an index
+            int index = arr[i];
+            
+            // if the element at our custom index is positive -> mark negative
+            if(arr[abs(index)] > 0)
+                arr[abs(index)] = -arr[abs(index)];
+            else{
+                // if the element is already negative then 
+                // that shows that the index we came from is repeating 
+                // store the index absolute value
+                ans.push_back(abs(index));
+            }
+        }
+        return ans;
+    }
+};
+
+// TC : O(n)
+// SC : O(1)
