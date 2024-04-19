@@ -1,0 +1,28 @@
+class Solution{
+	
+	
+	public:
+	vector<int> findMissing(int a[], int b[], int n, int m) 
+	{ 
+	    // Your code goes here
+      // step 1 : store the elements of b array in the map
+	    unordered_map<int,int> mp;
+	    for(int i = 0 ; i < m; i++){
+	        mp[b[i]]++;
+	    }
+	    
+	    vector<int> ans;
+	    
+	    // step 2 : iterate the a array and check if the element is not present
+	    for(int i = 0; i < n; i++){
+	        if(mp.find(a[i]) == mp.end()){
+	            ans.push_back(a[i]);
+	        }
+	    }
+	    
+	    return ans;
+	} 
+};
+
+TC : O(n + m)
+SC : O(m)
