@@ -1,0 +1,23 @@
+class Solution {
+  public:
+    int minRow(int n, int m, vector<vector<int>> a) {
+        // code here
+        int minOnes = 0;  // the index of the first min 1s rpw
+        int Ones = INT_MAX;    // let the current ones in the row be INT_MAX
+        for(int i = 0; i < n; i++){  
+            int sum = 0;  // to store the sum of the current row
+            for(int j = 0; j < m; j++){
+                sum += a[i][j];
+            }
+            // if the current rows sum is less than the Ones
+            if(sum < Ones){ 
+                Ones = sum;   // update the Ones
+                minOnes = i + 1; // update the row index
+            }
+        }
+        return minOnes;
+    }
+};
+
+// TC : O(n * m)
+// SC : O(1)
