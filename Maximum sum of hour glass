@@ -1,0 +1,29 @@
+/*
+  INTUTION
+    1] We need atleast three rows and cols to form an hourglass (Base case)
+    2] Start from the 2nd row and go to the 0th row taking all the coordinates and maximizing the answer  
+*/
+
+class Solution {
+  public:
+    int findMaxSum(int n, int m, vector<vector<int>> mat) {
+        // code here
+        
+        // base case
+        if(n < 3 or m < 3) 
+            return -1;
+        
+        int ans = INT_MIN;
+        for(int i = 2; i < n; i++){
+            int curSum = 0;
+            for(int j = 1; j < m - 1; j++){
+                curSum = mat[i - 2][j - 1] + mat[i - 2][j] + mat[i - 2][j + 1] + mat[i - 1][j] + mat[i][j - 1] + mat[i][j] + mat[i][j + 1];
+                ans = max(ans, curSum);
+            }
+        }
+        
+        return ans;
+    }
+};
+
+// TC : O(n * m) SC : O(1)
