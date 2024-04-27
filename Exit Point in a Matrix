@@ -1,0 +1,61 @@
+
+// Once you get one you just change the direction towards your right
+// left to right  :  would now go up to down
+// up to down : would now go right to left
+// right to left : would now go down to up
+// down to up : would now go letf to right
+
+class Solution {
+  public:
+    vector<int> FindExitPoint(int n, int m, vector<vector<int>>& matrix) {
+        // Code here
+        
+        int row = 0, col = 0, prevRow = 0, prevCol = 0, facing = 0;
+        
+        while(row < n and row >= 0 and col < m and col >= 0){
+            prevRow = row;
+            prevCol = col;
+            if(matrix[row][col]){
+                matrix[row][col] = 0;
+                if(facing == 0){
+                    row++;
+                    facing = 1;
+                }
+                else if(facing == 1){
+                    col--;
+                    facing = 2;
+                }
+                else if(facing == 2){
+                    row--;
+                    facing = 3;
+                }
+                else{
+                    col++;
+                    facing = 0;
+                }
+            }
+            else{
+                if(facing == 0){
+                    col++;
+                }
+                else if(facing == 1){
+                    row++;
+                }
+                else if(facing == 2){
+                    col--;
+                }
+                else{
+                    row--;
+                }
+            }
+        }
+        
+        vector<int> ans;
+        ans.push_back(prevRow);
+        ans.push_back(prevCol);
+        return ans;
+    }
+};
+
+// TC : O (n * m)
+// SC : O(1)
