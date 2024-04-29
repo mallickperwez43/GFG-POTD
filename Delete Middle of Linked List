@@ -1,0 +1,47 @@
+/* Link list Node:
+
+struct Node
+{
+    int data;
+    struct Node* next;
+
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+};
+
+*/
+
+// Deletes middle of linked list and returns head of the modified list
+class Solution{
+    public:
+    Node* deleteMid(Node* head)
+    {
+        // Your Code Here
+        if(head == NULL or head -> next == NULL) 
+            return NULL;
+        
+        Node* fast = head, *slow = head, *prev = NULL;
+        while(fast and fast -> next){
+            prev = slow;
+            slow = slow -> next;
+            fast = fast -> next -> next;
+        }
+        
+        prev -> next = slow -> next;
+        delete(slow);
+        return head;
+    }
+};
+
+// TC : O(n)
+// SC : O(!)
+
+/*
+    Approach
+    Take 3 pointers fast and slow pointing to the head while prev pointing to the NULL
+    prev is needed because we would delete the mid node so before deleting we would connect
+    the link between prev ans the mids next
+    then delete mid
+*/
