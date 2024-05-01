@@ -1,0 +1,122 @@
+/* node for linked list:
+
+struct Node {
+    int data;
+    struct Node* next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+*/
+
+class Solution
+{
+    private:
+    struct Node* reverseLL(struct Node* head){
+        Node *cur = head;
+        Node* prev = NULL;
+        Node* ahead = NULL;
+        
+        while(cur != NULL){
+            ahead = cur -> next;
+            cur -> next = prev;
+            prev = cur;
+            cur = ahead;
+        }
+        return prev;
+    }
+    
+    void insertAtTail(struct Node* &head, struct Node* &tail, int val){
+        Node* temp = new Node(val);
+        // if empty list
+        if(head == NULL){
+            head = temp;
+            tail = temp;
+        }
+        else{
+            tail -> next = temp;
+            tail = temp;
+        }
+    }
+    
+    struct Node* addTwoLL(struct Node* num1, struct Node* num2){
+        int carry = 0;
+        
+        Node* head = NULL;
+        Node* tail = NULL;
+        
+        while(num1 != NULL or num2 != NULL or carry != 0){
+            int val1 = 0;
+            if(num1 != NULL)
+                val1 = num1 -> data;
+            
+            int val2 = 0;
+            if(num2 != NULL)
+                val2 = num2 -> data;
+            
+            int sum = val1 + val2 + carry;
+            
+            int digit = sum % 10;
+            
+            carry = sum / 10;
+            
+            // create node and add in answer LL
+            insertAtTail(head, tail, digit);
+            
+            if(num1 != NULL)
+                num1 = num1 -> next;
+            if(num2 != NULL)
+                num2 = num2 -> next;
+        }
+            
+        return head;  
+    }
+    
+    public:
+    //Function to add two numbers represented by linked list.
+    struct Node* addTwoLists(struct Node* num1, struct Node* num2)
+    {
+        // code here
+        
+        // step 1 : deal with the leading zeros
+        
+        bool allLeadingZerosNum1 = true;
+        bool allLeadingZerosNum2 = true;
+        
+        while(num1){
+            if(num1 -> data != 0){
+                allLeadingZerosNum1 = false;
+                break;
+            }
+            num1 = num1 -> next;
+        }
+        
+        while(num2){
+            if(num2 -> data != 0){
+                allLeadingZerosNum2 = false;
+                break;
+            }
+            num2 = num2 -> next;
+        }
+        
+        // edge case -> both the list have only zero
+        if(allLeadingZerosNum1 and allLeadingZerosNum2){
+            return new Node(0);
+        }
+        
+        // step 2 : reverse the LL
+        num1 = reverseLL(num1);
+        num2 = reverseLL(num2);
+        
+        // step 3 : add the LL
+        Node* ansHead = addTwoLL(num1, num2);
+        
+        // step 4 : reverse the ans 
+        ansHead = reverseLL(ansHead);
+        
+        // step 5 : return ans
+        return ansHead;
+    }
+};
