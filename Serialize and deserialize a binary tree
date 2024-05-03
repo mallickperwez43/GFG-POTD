@@ -1,0 +1,62 @@
+/* A binary tree node has data, pointer to left child
+   and a pointer to right child  
+struct Node
+{
+    int data;
+    Node* left;
+    Node* right;
+}; */
+
+
+class Solution
+{   
+    private:
+    void preOrder(Node* root, vector<int> &v){
+        // base case
+        if(root == NULL){
+            v.push_back(-1);
+            return;
+        }
+        
+        v.push_back(root -> data);
+        preOrder(root -> left, v);
+        preOrder(root -> right, v);
+        
+        return;
+    }
+    
+    Node* solve(vector<int> &v, int &ind){
+        // base case
+        if(v[ind] == -1){
+            ind++;
+            return NULL;
+        }
+        
+        Node* root = new Node(v[ind]);
+        ind++;
+        root -> left = solve(v, ind);
+        root -> right = solve(v, ind);
+        
+        return root;
+    }
+    
+    public:
+    //Function to serialize a tree and return a list containing nodes of tree.
+    vector<int> serialize(Node *root) 
+    {
+        //Your code here
+        vector<int> ans;
+        preOrder(root, ans);
+        
+        return ans;
+    }
+    
+    //Function to deserialize a list and construct the tree.
+    Node * deSerialize(vector<int> &A)
+    {
+       //Your code here
+       int index = 0;
+       return solve(A, index);
+    }
+
+};
