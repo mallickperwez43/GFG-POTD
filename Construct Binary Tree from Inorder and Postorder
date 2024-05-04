@@ -1,0 +1,70 @@
+/*
+    step 1 : get the last element from the postorder
+    
+    step 2 : create a mapping of index and elements in inorder
+            find that element from inorder
+    
+    step 3 : get the left and right from inorder
+*/
+
+/* Tree node structure
+
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+};*/
+
+class Solution
+{
+    private:
+    Node* solve(int in[], int post[], int size, int &index, int inorderStart, int inorderEnd, map<int, int> &nodeToIndex){
+        // base case
+        if(index < 0 or inorderStart > inorderEnd){
+            return NULL;
+        }
+        
+        // create a new node of element
+        int element = post[index];
+        index--;
+        Node* root = new Node(element);
+        
+        // find position of element in inorder
+        int position = nodeToIndex[element];
+        
+        // recursive call
+        root -> right = solve(in, post, size, index, position + 1, inorderEnd, nodeToIndex);
+        root -> left = solve(in, post, size, index, inorderStart, position - 1, nodeToIndex);
+        
+        return root;
+    }
+    public:
+
+    //Function to return a tree created from postorder and inoreder traversals.
+    Node *buildTree(int in[], int post[], int n) {
+        // Your code here
+        
+        int postOrderIndex = n - 1;
+        
+        // create the mapping 
+        map<int, int>nodeToIndex;
+        
+        for(int i = 0; i < n; i++){
+            nodeToIndex[in[i]] = i;
+        }
+        
+        // recursive function
+        Node* ans = solve(in, post, n, postOrderIndex, 0, n - 1, nodeToIndex);
+        
+        return ans;
+    }
+};
+
+// TC : O(n)
+// SC : O(n)
