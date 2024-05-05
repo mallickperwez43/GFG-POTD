@@ -1,0 +1,65 @@
+/*
+    step 1 : create a mapping of level to sum
+    
+    step 2 : helper function(root, map, verticalLevel)
+            store the max and min so we get the range 
+            
+            base case
+            
+            update min and max
+            
+            map the map to that verticalLevel
+            
+            helper on left -> level - 1
+            helper on right -> level + 1
+            
+    step 3 : loop from min to max
+            push the ans of the level
+*/
+
+/*Complete the function below
+Node is as follows:
+struct Node{
+int data;
+Node *left,*right;
+};
+*/
+class Solution{
+  public:
+    int mn = INT_MAX, mx = INT_MIN;
+    
+    void helper(Node* root, unordered_map<int, int> &levelToSum, int vertical_Level){
+        // base case
+        if(!root) 
+            return;
+        
+        mn = min(mn, vertical_Level);
+        mx = max(mx, vertical_Level);
+        
+        levelToSum[vertical_Level] += root -> data;
+        
+        helper(root -> left, levelToSum, vertical_Level - 1);
+        helper(root -> right, levelToSum, vertical_Level + 1);
+    }
+     
+    vector <int> verticalSum(Node *root) {
+        // add code here.
+        // step 1
+        unordered_map<int, int> levelToSum;
+        
+        // step 2
+        helper(root, levelToSum, 0);
+        
+        // step 3
+        vector<int> ans;
+        for(int i = mn; i<= mx; i++){
+            if(levelToSum[i])
+                ans.push_back(levelToSum[i]);
+        }
+        
+        return ans;
+    }
+};
+
+// TC : O(n)
+// SC : O(n)
