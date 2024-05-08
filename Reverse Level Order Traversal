@@ -1,0 +1,45 @@
+/* make a queue and ans vector
+   push root and normal level order just a difference push right first then left
+   reverse the ans vector
+   return ans
+*/ 
+
+/*   
+struct Node
+{
+    int data;
+    Node* left;
+    Node* right;
+}; */
+vector<int> reverseLevelOrder(Node *root)
+{
+    // code here
+    queue<Node*> q;
+    vector<int> ans;
+    
+    q.push(root);
+    
+    while(!q.empty()){
+        Node* frontNode = q.front();
+        q.pop();
+        
+        ans.push_back(frontNode -> data);
+        
+        if(frontNode -> right) 
+            q.push(frontNode -> right);
+        if(frontNode -> left)
+            q.push(frontNode -> left);
+    }
+    
+    int start = 0, end = ans.size() - 1;
+    while(start <= end){
+        swap(ans[start], ans[end]);
+        start++;
+        end--;
+    }
+    
+    return ans;
+}
+
+// TC : O(n)
+// SC : O(n)
