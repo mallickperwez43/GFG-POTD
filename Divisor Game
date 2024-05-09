@@ -1,0 +1,10 @@
+class Solution {
+  public:
+    bool divisorGame(int n) {
+        // code here
+        return (n & 1) ? false : true;
+    }
+};
+
+// TC : O(1)
+// SC : O(1)
