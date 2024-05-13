@@ -1,0 +1,156 @@
+/*
+   INTUTION
+   for every edge we need to have nC2 nodes present to make it a good connected componenet
+   
+   APPROACH
+   1] make graph from the edges and also visited array
+   2] traverse all the components ( 1 -> V) DFS
+      if the current vertec is no visted 
+        keep the count of vertex and edges present 
+        call dfs 
+        and check (2 * edges) -> bidirectional
+            is equal to nC2 vectex
+            after simplyfy 
+            edges = vertec * vertex - 1
+            its a good component
+            increment ans
+    3] dfs -> 
+       mark the node as visited
+       include that node in the vertex
+       and add the edges conncted to that node from graph 
+       
+       iterate its neighbour
+       if(neighbour is not visited ) -> call dfs
+
+*/
+
+class Solution {
+  private:
+    void dfs(int node, vector<vector<int>> &graph, vector<bool> &visited, int &vertex, int &edges){
+        visited[node] = true;
+        vertex++;
+        edges += graph[node].size();
+        
+        for(auto neighbour : graph[node]){
+            if(!visited[neighbour]){
+                dfs(neighbour, graph, visited, vertex, edges);
+            }
+        }
+    }
+  public:
+    int findNumberOfGoodComponent(int e, int v, vector<vector<int>> &edges) {
+        // code here
+        // make graph and visited array
+        vector<vector<int>> graph(v + 1);
+        for(int i = 0; i < edges.size(); i++){
+            graph[edges[i][0]].push_back(edges[i][1]);
+            graph[edges[i][1]].push_back(edges[i][0]);
+        }
+        
+        vector<bool> visited(v + 1, false);
+        
+        // ans variable and call dfs for every node
+        int noOfGC = 0;
+        
+        for(int i = 1; i <= v; i++){
+            if(!visited[i]){
+                // get the current nodes/ vertex and edges
+                int curVertex = 0;
+                int curEdges = 0;
+                
+                dfs(i, graph, visited, curVertex, curEdges);
+                
+                // since biderctional edge so counted twice and every node should ghave nC2 so n * (n - 1) / 2
+                // but edge is count double so we just take the 2 from both sides
+                if(curEdges == curVertex* (curVertex - 1))
+                    noOfGC++;
+            }
+        }
+        
+        return noOfGC;
+    }
+};
+
+// TC : O(V + E)
+// SC : O(V + E)
+
+
+// method 2
+
+/*
+   INTUTION
+   for every nodes in the connected component there should be 1 adjacent egdes less the whole component
+   
+   APPROACH
+   1] make graph from the edges and also visited array
+   2] traverse all the components ( 1 -> V) DFS
+      if the current vertec is no visted 
+        keep the count of vertex  present
+        and a boolean variable to know if ts GC
+        call dfs 
+        and check if boolean is true 
+             and the number of nodes except itself is eaaul to all the adjacent edges
+            its a good component
+            increment ans
+    3] dfs -> 
+       mark the node as visited
+       include that node in the vertex
+       
+       if the size is not equal to the the adjacent of that node size then mark false
+       
+       iterate its neighbour
+       if(neighbour is not visited ) -> call dfs
+
+*/
+
+class Solution {
+  private:
+    void dfs(int node, int size, vector<vector<int>> &graph, vector<bool> &visited, bool &isGC, int &vertex){
+        visited[node] = true;
+        vertex++;
+        
+        if(size != graph[node].size()){
+            isGC = false;
+        }
+        
+        for(auto neighbour : graph[node]){
+            if(!visited[neighbour]){
+                dfs(neighbour,size ,graph, visited, isGC, vertex);
+            }
+        }
+    }
+  public:
+    int findNumberOfGoodComponent(int e, int v, vector<vector<int>> &edges) {
+        // code here
+        // make graph and visited array
+        vector<vector<int>> graph(v + 1);
+        for(int i = 0; i < edges.size(); i++){
+            graph[edges[i][0]].push_back(edges[i][1]);
+            graph[edges[i][1]].push_back(edges[i][0]);
+        }
+        
+        vector<bool> visited(v + 1, false);
+        
+        // ans variable and call dfs for every node
+        int noOfGC = 0;
+        
+        for(int i = 1; i <= v; i++){
+            if(!visited[i]){
+                int curVertex = 0;
+                bool isGoodComp = true;
+                
+                dfs(i, graph[i].size(), graph,visited, isGoodComp, curVertex);
+                
+                // in a connected component -> if the count of all the node except itself is equal to 
+                // its adjacent edges then its a good component
+                if(isGoodComp and curVertex - 1 == graph[i].size())
+                    noOfGC++;
+            }
+        }
+        
+        return noOfGC;
+    }
+};
+
+// TC : O(V + E)
+// SC : O(V + E)
