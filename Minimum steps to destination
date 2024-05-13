@@ -1,0 +1,53 @@
+/* cases 
+   1] we reached exactly at our destination -> return moves
+   2] we reached ahead somewhere (because we were adding) 
+        now we need to chose the which i should be taken negative to reach the destination
+        (if 5 is taken negative so we are now at -5 and then to reach 5 we have 2 * 5 distance)
+       
+        now 3 cases
+        case 2.1] diff is even -> (what ever i have came ahead i would have taken that as negative) ie 
+                  eg diff is of 10 so 10/2 = 5 -> i should have taken 5 as negative side
+                  therefore -> same moves
+                  cur is even and d is also even
+        
+        case 2.2] diff is odd check moves
+            
+            case 2.2.1] if moves is even -> (cur - d) is odd  
+            but we need to make it strictly even (if diff is 11 so 11 / 2 is 5.5 no move possible)
+            
+            if(cur is even and d is odd)
+            next move will make it odd and diff would be even 
+            so moves + 1
+            
+            case 2.2.2] if moves is odd -> next move would be even
+            cur will still be odd and d is even so diff is even
+            so to manage it 
+            we need to again take another move which would be odd so cur will now be even
+            so moves + 2
+            
+*/
+            
+
+class Solution {
+  public:
+    int minSteps(int d) {
+        // code here
+        int cur = 0, moves = 0; 
+        
+        while (cur < d){
+            moves++;
+            cur += moves;
+        }
+        
+        if(cur == d) return moves;
+        
+        int diff = cur - d;
+        
+        if(diff % 2 == 0) return moves;
+        
+        return moves % 2 == 0 ? moves + 1 : moves + 2;
+    }
+};
+
+// TC : O(d)
+// SC : O(1)
