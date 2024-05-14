@@ -1,0 +1,65 @@
+/*  
+    Intution 
+    Using BFS to traverse the whole matrix level wise and exploring the minimum effort path
+   
+    Approach
+    1] Make a queue of type pair of int and pair and visited matrix
+       (We need a pair(diff and a pair of current coordinates))
+    2] Push the starting in the queue
+    3] Make the directions matrix possible ones
+    4] Start the BFS
+       get the fronts updates 
+       explore it in all 4 directions
+       if the next move is in bound 
+            update the diff 
+                 if the diff is less than the visited one update visisted one as the minimum one 
+                 and call BFS for this new one
+    5] The last cell in the visited one is the answer
+
+*/
+
+class Solution {
+    
+  public:
+    int MinimumEffort(int rows, int columns, vector<vector<int>> &heights) {
+        // code here
+        // queue of pair(diff, pair(x, y))
+        queue<pair<int, pair<int, int>>> q;
+        vector<vector<int>> visited(rows, vector<int>(columns, INT_MAX));
+        q.push({0, {0, 0}});
+                     
+        // directions L U R D
+        int dirX[] = {-1, 0, 1, 0};
+        int dirY[] = {0, 1, 0, -1};
+        
+        while(!q.empty()){
+            auto cur = q.front();
+            q.pop();
+            
+            int diff = cur.first;
+            int i = cur.second.first;
+            int j = cur.second.second;
+            
+            // explore all four directions
+            for(int k = 0; k < 4; k++){
+                int newi = i + dirX[k];
+                int newj = j + dirY[k];
+                
+                // in bound
+                if(newi >= 0 and newi < rows and newj >= 0 and newj < columns){
+                    int newDiff = max(diff, abs(heights[i][j] - heights[newi][newj]));
+                    
+                    if(newDiff < visited[newi][newj]){
+                        visited[newi][newj] = newDiff;
+                        q.push({newDiff, {newi, newj}});
+                    }
+                }
+            }
+        }
+        
+        return visited[rows - 1][columns - 1] != INT_MAX ? visited[rows - 1][columns - 1] : 0;
+    }
+};
+
+// TC : O(n * m)
+// SC : O(n * m)
