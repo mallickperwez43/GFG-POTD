@@ -1,0 +1,112 @@
+// implementation 1
+
+class Solution {
+private:
+    int dfs(int node, unordered_map<int, list<int>> &adj, vector<bool> &visited, int &ans){
+        // mark that node as visited and the curSize (node) is 1
+        visited[node] = true;
+        int curSize = 1;  // size of source
+        
+        // visit the nodes neighbour
+        for(auto neighbour : adj[node]){
+            if(!visited[neighbour]){
+                // getting all the nodes size in the component
+                int callSize = dfs(neighbour, adj, visited, ans);
+                curSize += callSize; // getting the overall nodes (not required)
+                
+                // checking if we break this edge can we have a even size component
+                if(callSize % 2 == 0)
+                    ans++;
+            }
+        }
+        
+        return curSize;
+    }
+public:
+	int minimumEdgeRemove(int n, vector<vector<int>>edges){
+	    // Code here
+	    
+	    // prepare adj list
+	    unordered_map<int, list<int>> adj;
+	    for(int i = 0; i < edges.size(); i++){
+	        int u = edges[i][0];
+	        int v = edges[i][1];
+	        
+	        adj[u].push_back(v);
+	        adj[v].push_back(u);
+	    }
+	    
+	    // make visited array
+	    vector<bool> visited(n + 1, false);
+	    
+	    int ans = 0;
+	    
+	    // go for every node 
+	    for(int i = 1; i <= n; i++){
+	        if(!visited[i]){
+	            dfs(i, adj, visited, ans);
+	        }
+	    }
+	    
+	    return ans;
+	    
+	}
+};
+
+
+// implementation 2
+
+class Solution {
+public:
+    int ans = 0;
+    
+    int dfs(unordered_map<int, list<int>> &adj, vector<bool> &visited, int node){
+        // mark visited 
+        visited[node] = true;
+        int cnt = 1;  // cur node count
+        
+        // visit its neighbour
+        for(auto neighbour : adj[node]){
+            if(!visited[neighbour]){
+                // get the size of it neighbouring nodes
+                int res = dfs(adj, visited, neighbour);
+                
+                // if its even we can remove that edge
+                if(res % 2 == 0){
+                    ans++;
+                }
+                else{
+                    // add the neighbouring nodes count to cur node count
+                    cnt += res;
+                }
+            }
+        }
+        
+        return cnt;
+    }
+    
+	int minimumEdgeRemove(int n, vector<vector<int>>edges){
+	    // Code here
+	    
+	    // prepare adj list
+	    unordered_map<int, list<int>> adj;
+	    for(int i = 0; i < edges.size(); i++){
+	        int u = edges[i][0];
+	        int v = edges[i][1];
+	        
+	        adj[u].push_back(v);
+	        adj[v].push_back(u);
+	    }
+	    
+	    // make visited array
+	    vector<bool> visited(n + 1, false);
+	    
+	    // call dfs on the root
+	    dfs(adj, visited, 1);
+	    
+	    return ans;
+	}
+};
+
+// TC : O(n)
+// SC : O(n)
