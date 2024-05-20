@@ -1,0 +1,27 @@
+class Solution
+{ 
+	public:
+		long long int PowMod(long long int x,long long int n,long long int M)
+		{
+		    // Code here
+		    long long int ans = 1;
+		    
+		    while(n > 0){
+		        // power is odd add its contribution to answer
+		        if(n & 1){
+		            ans = (ans * x) % M;
+		            n--;
+		        }
+		        else{
+		            // power is even continue to see the possible contribution
+		            x = (x * x) % M;
+		            n /= 2;
+		        }
+		    }
+		    
+		    return ans;
+		}
+};
+
+// TC : O(logn)
+// SC : O(1)
