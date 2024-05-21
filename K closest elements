@@ -1,0 +1,131 @@
+// Method 1 : Priority Queue 
+
+class Solution {
+  public:
+    struct Comparator {
+        bool operator()(const pair<int, int> &a, const pair<int, int> &b){
+            if(a.first == b.first){
+                return a.second > b.second;
+            }
+            
+            return a.first < b.first;
+        }  
+    };
+    
+    vector<int> printKClosest(vector<int> arr, int n, int k, int x) {
+        // code here
+        priority_queue<pair<int, int>, vector<pair<int, int>>, Comparator> pq;
+
+        // Step 1: Fill the priority queue
+        for (int num : arr) {
+            if(num != x){
+                int diff = abs(x - num);
+                
+                pq.push({diff, num});
+                
+                while(pq.size() > k){
+                    pq.pop();
+                }
+            }
+        }
+
+        // Step 2: Extract elements from priority queue
+        vector<int> result;
+        while (!pq.empty()) {
+            result.push_back(pq.top().second);
+            pq.pop();
+        }
+        
+        // Step 3 : Since elements are in the decesnding order of the diff, we need ascending form 
+        reverse(result.begin(), result.end());
+
+        return result;
+    }
+};
+
+// TC : O(n * logk)
+// SC : O(k)
+
+
+// Method 2 : Binary Search + Two Pointers
+
+class Solution {
+  private : 
+    int findClosest(vector<int> arr,int low, int high, int target){
+        while(low <= high){
+            //handling corner edges
+            if(arr[high] <= target)
+                return high;
+            
+            if(arr[low] > target)
+                return low;
+            
+            // mid
+            int mid = low + (high - low) / 2;
+            
+            // a closest is one whoes less or equal to target and next one is greater
+            if(arr[mid] <= target and arr[mid + 1] > target)
+                return mid;
+            
+            if(arr[mid] > target){
+                high = mid - 1;
+            }
+            else{
+                low = mid + 1;
+            }
+        }
+        return -1;
+    }
+    
+  public:
+    vector<int> printKClosest(vector<int> arr, int n, int k, int x) {
+        // code here
+        
+        vector<int> ans;
+        int count = 0;
+        
+        // Step 1 : Binary Search to find the index of the closest and point the next pointer just adjacent 
+        int l = findClosest(arr, 0, n - 1, x);
+        int r = l + 1;
+        
+        // Step 2 : If found equal so go to left part(condition 1)
+        if(arr[l] == x) 
+            l--;
+        
+        // loop to find the closest ones
+        while(l >= 0 and r < n and count < k){
+            if(x - arr[l] < arr[r] - x){
+                // if diff is less take the smaller one
+                ans.push_back(arr[l]);
+                l--;
+            }
+            else{
+                // if diff is equal or greater take bigger one (condition 2)
+                ans.push_back(arr[r]);
+                r++;
+            }
+            count++;
+        }
+        
+        // condition 3
+        
+        // loop if j is exosted (explore only left)
+        while(count < k and l >= 0){
+            ans.push_back(arr[l]);
+            l--;
+            count++;
+        }
+        
+        // loop if i is exosted (explore only right)
+        while(count < k and r < n){
+            ans.push_back(arr[r]);
+            r++;
+            count++;
+        }
+        
+        return ans;
+    }
+};
+
+// TC : O(logn + k)
+// SC : O(k)
