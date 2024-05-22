@@ -1,0 +1,64 @@
+/*  
+    Intution
+    since the array is sorted we can use this a pov to think in the direction of binary search
+    
+    Approach
+    we need to minimize the maximum distance in between the adjacent gas stations and check if its possible
+    to actually get k gas stations in a way that after we assign them we are going to get the diff minimum
+    
+    we would actually try for the ones with the maximum distance of the adjacent and see if its possible to minimize it 
+    
+    1] since the array is sorted the maximum distance can be the diff of(last and first) stations 
+        and minimum diff to be zero (building the search space)
+    2] the ans can be high and mid to be 0(low)
+    3] low <= high wont work because its we may be going closer to the ans but can catch an infinite loop 
+        to tackle this we can make a high - low to be less than 10 ^ -6
+    4] get mid & if its possible to get k stations and minimize the distance then we wont go for more 
+         ans can be mid and high also pointing to mid
+         else low wo go to the mid
+    5] finding if its possible to place k stations in between with the cur mid
+        we could keep a count of stations to be placed 
+          then check for every two adj pair of elements in the stations and calculate diff and then add to count 
+          by simply if the diff / mid (upper value) - 1 (to get in int form)
+          
+          if its less or equal it can be the answer no its time to reduce the search space 
+
+*/
+    
+class Solution {
+  private: 
+    bool isPossible(vector<int> & stations, double mid, int k){
+        int countOfStn = 0;
+        for(int i = 1; i < stations.size(); i++){
+            int diffOfDist = stations[i] - stations[i - 1];
+            countOfStn += ceil(diffOfDist / mid) - 1;
+        }
+        return countOfStn <= k;
+    }
+  public:
+    double findSmallestMaxDist(vector<int> &stations, int k) {
+        // Code here
+        int n = stations.size();
+        
+        // search space 
+        double low = 0, high = stations[n - 1] - stations[0];
+        double mid = 0, ans = high;
+        
+        while(high - low >= 1e-6){
+            mid = (low + high) / 2;
+            
+            // reducing the search space
+            if(isPossible(stations, mid, k)){
+                ans = mid;
+                high = mid;
+            }
+            else
+                low = mid;
+        }
+        
+        return ans;
+    }
+};
+
+// TC : O(n * log x) // binary search takes x time
+// SC : O(1)
