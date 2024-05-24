@@ -1,0 +1,40 @@
+const int mod = 1e9+7;
+
+class Solution {
+  private:
+    int helper(int n, int d, vector<int> &arr, int sum, int pickSum, int index, vector<vector<int>> &dp){
+        // base case
+        
+        // onbservation nonPickSum = sum - pickSum and diff = (nonPickSum - pickSum) ie (sum - pickSum - pickSum)
+        // (sum - 2*pickSum) if anytime both subset have diff less then no point going ahead
+        if(sum - 2*pickSum < d) return 0;
+        if(index == n){
+            int nonPickSum = sum - pickSum;
+            
+            return (nonPickSum - pickSum == d) ? 1 : 0;
+        }
+        if(dp[index][pickSum] != -1) return dp[index][pickSum];
+        
+        // not taken (not pick)
+        int np = helper(n, d, arr, sum, pickSum, index + 1, dp);
+        
+        // taken (pick)
+        int p = helper(n, d, arr, sum, pickSum + arr[index], index + 1, dp);
+        
+        return dp[index][pickSum] = (np + p) % mod;
+    }
+    
+  public:
+    int countPartitions(int n, int d, vector<int>& arr) {
+        // Code here
+        int sum = 0;
+        for(int i = 0; i < n; i++){
+            sum += arr[i];
+        }
+        vector<vector<int>> dp(n, vector<int>(sum + 1, -1));
+        return helper(n, d, arr, sum, 0, 0, dp);
+    }
+};
+
+// TC : O(n * sum)
+// SC : O(n * sum)
