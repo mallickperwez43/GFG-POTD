@@ -1,0 +1,30 @@
+class Solution {
+  public:
+    int findWinner(int n, int x, int y) {
+        // code here
+        bool dp[n + 1];
+        
+        // base case 
+        dp[0] = false;  // if no coin geek cant win
+        dp[1] = true;  // if only one coin
+        
+        // checking conditions for Geek to win
+        for(int i = 2; i <= n; i++){
+            // to play optimally pick 1 first 
+            if(i - 1 >= 0 and dp[i - 1] == false) 
+                dp[i] = true; // prev was taken by friend then i can pick it
+            else if(i - x >= 0 and dp[i - x] == false)
+                dp[i] = true; // prev was taken by friend then i can pick it
+            else if(i - y >= 0 and dp[i - y] == false)
+                dp[i] = true; // prev was taken by friend then i can pick it
+            else 
+                dp[i] = false; // geek cant pick so only friend can pick 
+        }
+        
+        return dp[n];
+        
+    }
+};
+
+// TC : O(n)
+// SC : O(n)
