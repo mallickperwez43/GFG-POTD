@@ -1,0 +1,26 @@
+class Solution {
+  public:
+    int swapNibbles(int n) {
+        // code here
+        
+        // xxxxyyyy  x -> 2nd nibble , y -> first nibble
+        
+        // step 1 : getting the second nibble in place of 1st 
+        int rightShifted = n >> 4;
+        
+        // step 2 : getting the first nibble in the seconds place
+        
+        // 2.1 masking the first nibble so using 15 (00001111) or 0x0F
+        int maskedValue = (n & 15);
+        
+        // 2.2 left shifting the masked value to bring  first nibble in seconds place
+        
+        int leftShifted = maskedValue << 4;
+        
+        // step 3 : getting the desired swapped nibbles just by using bitwise OR 
+        return rightShifted | leftShifted;
+    }
+};
+
+// TC : O(1)
+// SC : O(1)
