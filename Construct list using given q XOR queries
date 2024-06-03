@@ -1,0 +1,30 @@
+class Solution {
+  public:
+    vector<int> constructList(int q, vector<vector<int>> &queries) {
+        // code here
+        int resultantXorNum = 0;
+        
+        vector<int> ans;
+        
+        // get the resulantant Xor num
+        
+        // iterate from back bcoz we would be getting the xorNum as a result so we just Xor and add when its 0 
+        for(int i = q - 1; i >= 0; i--){
+            if(queries[i][0])
+                resultantXorNum ^= queries[i][1];
+            else
+                ans.push_back(resultantXorNum ^ queries[i][1]);
+        }
+        
+        // push the resulant Xor num
+        ans.push_back(resultantXorNum);
+        
+        // sort the list
+        sort(ans.begin(), ans.end());
+        
+        return ans;
+    }
+};
+
+// TC : O(q * log(q))
+// SC : O(l) -> length of the ans vector
