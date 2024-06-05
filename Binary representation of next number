@@ -1,0 +1,43 @@
+/* Basic Idea
+   making the next number is nothing but add a one to it 
+   that simply means change the first nonset bit from back to set one and make the others 
+   set bit before first nonset bit to nonset ie 0
+   
+   make sure to handle the case where every bit is set 
+   and also remove the trailing zeros
+*/
+
+class Solution {
+  public:
+    string binaryNextNumber(string s) {
+        // code here.
+        bool noZero = true;
+        for(int i = s.length() - 1; i >= 0; i--){
+            // make the first zero as one
+            if(s[i] == '0'){
+                noZero = false;
+                s[i] = '1';
+                break;
+            }
+            else
+                // make the 1s as zero until you havent encountered the first 0
+                s[i] = '0';
+        }
+        // example case when no zero is encounteres is 
+        // 7 -> 111 to 8 -> 1000 
+        // append 1
+        if(noZero){
+            s = '1' + s;
+        }
+        else{
+            // removing the leading zero
+            while(s[0] == '0') 
+                s.erase(s.begin());
+        }
+        
+        return s;
+    }
+};
+
+// TC : O(n)
+// SC : O(1)
