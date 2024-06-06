@@ -1,0 +1,141 @@
+// Method 1 : Sort + Two pointer 
+
+/* Basic Idea is to find the pair of element that can be swaped to get equal sum
+
+   Intution 
+   since the array is not sorted sort the array
+   use two pointer and binary search in that two pointer
+   
+   edge case diff of both sums is odd i cant find a pair because 
+   sumA - x + y = sumB + x - y  -> x to be chosen from a , y to be chosen from b
+   sumA - sumB = 2x - 2y
+   sumA - sumB = 2(x - y)
+   (sumA - sumB) / 2 = (x - y)
+   -> if the sumDiff divide by 2 is odd then you can't find the pair -> return -1
+   
+   sort both the array
+   
+   a = {1, 1, 1, 2, 2, 4}, b = {3, 3, 3, 6} 
+   sumA = 11, sumB = 15;
+   target = (15 - 11) / 2 = 4 
+   can find a pair
+   
+   two pointer
+   i = 0, j = 0
+   loop(i < n and j < m)
+    diff = a[i] - b[j]
+    
+    3 cases 
+    case 1 : diff == target
+    return 1
+    
+    case 2 : diff > target
+    diff = a[i] - b[j] so subtract more so increment j
+    j++;
+    
+    case 3 : diff < target
+    diff = a[i] - b[j] so first number should be greater so  more so increment i
+    i++;
+    
+*/
+
+class Solution {
+  public:
+    int findSwapValues(int a[], int n, int b[], int m) {
+        // Your code goes here
+        
+        // step 1 : calculate both the sum of arrays
+        int sumA = 0, sumB = 0;
+        for(int i = 0; i < n; i++) sumA += a[i];
+        for(int j = 0; j < m; j++) sumB += b[j];
+        
+        // step 2 : sort both the arrays  
+        sort(a, a + n);
+        sort(b, b + m);
+        
+        // step 3 : edge case (if diff is odd)
+        if(((sumA - sumB) & 1)) return -1; 
+        
+        // step 4 : two pointers 
+        int targetDiff = (sumA - sumB) / 2;
+        int i = 0, j = 0;
+        while(i < n and j < m){
+            int curDiff = a[i] - b[j];
+            
+            if(curDiff == targetDiff) return 1;
+            else if(curDiff > targetDiff) j++;
+            else i++;
+        }
+        
+        return -1;
+    }
+};
+
+// TC : O(nlogn + mlogm)
+// SC : O(1)
+
+
+
+// Method 2 : Sort + Binary Search
+
+
+/* Basic Idea is to find the pair of element that can be swaped to get equal sum
+
+   Intution 
+   since the array is not sorted sort the array
+   use two pointer and binary search in that two pointer
+   
+   edge case diff of both sums is odd i cant find a pair because 
+   sumA - x + y = sumB + x - y  -> x to be chosen from a , y to be chosen from b
+   sumA - sumB = 2x - 2y
+   sumA - sumB = 2(x - y)
+   (sumA - sumB) / 2 = (x - y)
+   -> if the sumDiff divide by 2 is odd then you can't find the pair -> return -1
+   
+   sort the second array
+   
+   a = {1, 1, 1, 2, 2, 4}, b = {3, 3, 3, 6} 
+   sumA = 11, sumB = 15;
+   target = (15 - 11) / 2 = 4 
+   can find a pair
+   
+   second array is sorted so we can apply binary search to get a[i] - target
+    
+*/
+
+class Solution {
+  public:
+    int findSwapValues(int a[], int n, int b[], int m) {
+        // Your code goes here
+        
+        // step 1 : calculate both the sum of arrays
+        int sumA = 0, sumB = 0;
+        for(int i = 0; i < n; i++) sumA += a[i];
+        for(int j = 0; j < m; j++) sumB += b[j];
+        
+        // step 2 : edge case (if diff is odd)
+        if((abs(sumA - sumB) & 1)) return -1; 
+        
+        // step 3 : sort the second array  
+        sort(b, b + m);
+        
+        // step 4 : binary search (lower bound)
+        int diff = (sumA - sumB) / 2;
+        
+        for(int i = 0; i < n; i++){
+            int target = abs(a[i] - diff);
+    
+            int index = lower_bound(b, b + m, target) - b;
+            
+            // inbound
+            if(index >= 0 and index < m and a[i] - b[index] == diff){
+                return 1;
+            }
+        }
+        
+        return -1;
+    }
+};
+
+// TC : O(nlogn + mlogm)
+// SC : O(1)
