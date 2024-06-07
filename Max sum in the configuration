@@ -1,0 +1,30 @@
+class Solution {
+  public:
+    long long max_sum(int a[], int n) {
+        // Your code here
+        long long  sum = 0, weightedSum = 0;
+        
+        // get the sum and the a[i] * i(weightedSum)
+        for(long long i = 0; i < n; i++){
+            sum += a[i];
+            weightedSum += i * a[i];  
+        }
+        
+        // get the ans
+        long long ans = weightedSum;
+        
+        // maintain the indexes and cur weighted sum after every rotation
+        for(long long i = 1; i < n; i++){
+            long long curSum = weightedSum - (sum - a[i - 1]) + (1LL * a[i - 1] * (n - 1));
+            
+            ans = max(ans, curSum);
+            
+            weightedSum = curSum;
+        }
+        
+        return ans;
+    }
+};
+
+// TC : O(n)
+// SC : O(1)
