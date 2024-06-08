@@ -1,0 +1,83 @@
+// Brute force
+
+class Solution {
+  public:
+    // l and r are input array
+    // maxx : maximum in r[]
+    // n: size of array
+    // arr[] : declared globally with size equal to maximum in l[] and r[]
+    // Function to find the maximum occurred integer in all ranges.
+    int maxOccured(int n, int l[], int r[], int maxx) {
+
+        // Your code here
+        
+        // step 1 : maintain freqArr
+        vector<int> freqArr(maxx, 0);
+        
+        // step 2 : iterate on both the arrays 
+        for(int i = 0; i < n; i++){
+            // iterate on every range and get the increment freq accordingly
+            for(int j = l[i]; j <= r[i]; j++){
+                freqArr[j]++;
+            }
+        }
+        
+        // step 3 : get the max freq index(element)
+        int maxFreq = 0, ans = INT_MAX;
+        for(int i = 0; i < maxx; i++){
+            if(freqArr[i] >= maxFreq){
+                maxFreq = freqArr[i];
+                ans = min(ans, i);
+            }
+        }
+        
+        return ans + 1;
+    }
+};
+
+// TC : O(n * (every ranges) + maxx)
+// SC : O(maxx)
+
+
+// Prefix Sum
+
+class Solution {
+  public:
+    // l and r are input array
+    // maxx : maximum in r[]
+    // n: size of array
+    // arr[] : declared globally with size equal to maximum in l[] and r[]
+    // Function to find the maximum occurred integer in all ranges.
+    int maxOccured(int n, int l[], int r[], int maxx) {
+
+        // Your code here
+        
+        // step 1 : maintain freqArr
+        vector<int> freqArr(maxx + 2, 0);  // +1 toh max ke liye 0 based indexing // +2 max + 1 needed hai
+        
+        // step 2 : iterate on both arrays just to get ranges 
+        // since we have ranges here so we should just take the help of the ranges 
+        // increment the starting point and decrement the ending point + 1
+        for(int i = 0; i < n; i++){
+            freqArr[l[i]]++;
+            freqArr[r[i] + 1]--;
+        }
+        
+        // step 3 : since we have range end points so lets take prefix sum and get the freq of every element 
+        // and do the calculation
+        int maxFreq = freqArr[0], ans = 0;
+        for(int i = 1; i < maxx + 1; i++){
+            freqArr[i] += freqArr[i - 1]; // prefix sum
+            // when maxFreq is less than cur elements freq
+            if(maxFreq < freqArr[i]){
+                maxFreq = freqArr[i];
+                ans = i;
+            }
+        }
+        
+        return ans;
+    }
+};
+
+// TC : O(n + maxx)
+// SC : O(maxx)
