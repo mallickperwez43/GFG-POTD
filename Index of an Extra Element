@@ -1,0 +1,22 @@
+class Solution {
+  public:
+    int findExtra(int n, int arr1[], int arr2[]) {
+        // add code here.
+        int start = 0, end = n - 1;
+        
+        while(start <= end){
+            int mid = start + (end - start) / 2;
+            // both have elements in the mid then no point searching int left part
+            if(arr1[mid] == arr2[mid]){
+                start = mid + 1;
+            }
+            else{
+                // go to left
+                end = mid - 1;
+            }
+        }
+        return start;
+    }
+};
+// TC : O(logn)
+// SC : O(1)
