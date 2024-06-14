@@ -1,0 +1,24 @@
+const int mod = 1e9+7;
+class Solution
+{
+    public:
+    int padovanSequence(int n)
+    {
+       //code here
+       if(n <= 2) return 1;
+       int a = 1, b = 1, c = 1;
+       
+       int d;
+       for(int i = 3; i <= n; i++){
+           d = (a + b) % mod;
+           a = b;
+           b = c;
+           c = d;
+       }
+       
+       return d;
+    }
+};
+
+// TC : O(n)
+// SC : O(1)
