@@ -1,0 +1,17 @@
+class Solution {
+  public:
+    string armstrongNumber(int n) {
+        // code here
+        // get the last digit and add its contributiom(cube to ans)
+        int cube = 0, temp = n;
+        while(temp){
+            int digit = temp % 10;
+            cube += digit * digit * digit;
+            temp /= 10;
+        }
+        return (cube == n) ? "true" : "false";
+    }
+};
+
+// TC : O(n)
+// SC : O(1)
