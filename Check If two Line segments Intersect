@@ -1,0 +1,45 @@
+class Solution {
+  public:
+    // Check if point r lies on the segment pq
+    bool isOnSegment(int p[], int q[], int r[]) {
+        if (r[0] <= max(p[0], q[0]) && r[0] >= min(p[0], q[0]) && 
+            r[1] <= max(p[1], q[1]) && r[1] >= min(p[1], q[1])) {
+            return true;
+        }
+        return false;
+    }
+    
+    // Determine the orientation of the triplet (p, q, r)
+    int direction(int p[], int q[], int r[]) {
+        long long val = 1LL * (q[1] - p[1]) * (r[0] - q[0]) - 1LL * (q[0] - p[0]) * (r[1] - q[1]);
+        if (val == 0) return 0;  // Collinear
+        return (val > 0) ? 1 : -1;  // Clockwise or counterclockwise
+    }
+    
+    string doIntersect(int p1[], int q1[], int p2[], int q2[]) {
+        // code here
+        
+        int d1 = direction(p1, q1, p2);
+        int d2 = direction(p1, q1, q2);
+        int d3 = direction(p2, q2, p1);
+        int d4 = direction(p2, q2, q1);
+        
+        // General case
+        if (d1 != d2 && d3 != d4) return "true";
+        
+        // Special cases
+        // p2 is on segment p1q1
+        if (d1 == 0 && isOnSegment(p1, q1, p2)) return "true";
+        // q2 is on segment p1q1
+        if (d2 == 0 && isOnSegment(p1, q1, q2)) return "true";
+        // p1 is on segment p2q2
+        if (d3 == 0 && isOnSegment(p2, q2, p1)) return "true";
+        // q1 is on segment p2q2
+        if (d4 == 0 && isOnSegment(p2, q2, q1)) return "true";
+        
+        return "false";
+    }
+};
+
+// TC : O(1)
+// SC : O(1)
