@@ -1,0 +1,38 @@
+class Solution {
+  private:
+  long long gcd(long long m, long long n){
+      while(n != 0){
+          long temp = n;
+          n = m % n;
+          m = temp;
+      }
+      
+      return m;
+  }
+  public:
+    long long int InternalCount(long long int p[], long long int q[],
+                                long long int r[]) {
+        // code here
+        
+        // find the area 
+        long long area =  abs((p[0] * (q[1] - r[1])) + (q[0] * (r[1] - p[1])) + (r[0] * (p[1] - q[1])));
+        area /= 2;
+        
+        // find bounday points using gcd
+        long long Bpq = gcd(abs(p[0] - q[0]), abs(p[1] - q[1]));
+        long long Bqr = gcd(abs(q[0] - r[0]), abs(q[1] - r[1]));
+        long long Brp = gcd(abs(r[0] - p[0]), abs(r[1] - p[1]));
+        long long B = Bpq + Bqr + Brp;
+        
+        
+        // Picks theorem 
+        // area = i  + b / 2 - 1
+        // -> i = area - b / 2 + 1
+        long long i = area - B / 2 + 1;
+        
+        return i;
+    }
+};
+
+// TC : O(log n)
+// SC : O(1)
