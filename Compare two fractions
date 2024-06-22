@@ -1,0 +1,41 @@
+class Solution {
+  public:
+    string compareFrac(string str) {
+
+        // Code here
+        int num = 0, den = 0;
+        string firstFrac = "", secondFrac = "", temp = "";
+        double first, second;
+        bool indication = false;
+        for(char ch : str){
+            if(ch == '/'){
+                indication = true;
+                temp += ch;
+                continue;
+            }
+            else if(ch == ','){
+                indication = false;
+                first = (double)num / den;
+                num = 0;
+                den = 0;
+                firstFrac = temp;
+                temp = "";
+                continue;
+            }
+            else if(ch == ' ') continue;
+            temp += ch;
+            if(!indication){
+                num = num * 10 + (ch - '0');
+            }
+            else{
+                den = den * 10 + (ch - '0');
+            }
+        }
+        secondFrac = temp;
+        second = (double)num / den;
+        
+        if(first > second) return firstFrac;
+        else if(second > first) return secondFrac;
+        return "equal";
+    }
+};
