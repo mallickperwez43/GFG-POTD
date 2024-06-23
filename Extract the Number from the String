@@ -1,0 +1,23 @@
+class Solution {
+  public:
+    long long ExtractNumber(string sentence) {
+
+        // code here
+        long long ans = 0, temp = 0;
+        bool check = false;
+        for(char ch : sentence){
+            if(ch >= '0' and ch <= '9'){
+                temp = temp * 10 + (ch - '0');
+                if(ch == '9') check = true;
+            }
+            else if(ch == ' '){
+                if(!check) ans = max(ans, temp);
+                check = false;
+                temp = 0;
+            }
+        }
+        
+        if(!check) ans = max(ans, temp);
+        return (ans == 0) ? -1 : ans;
+    }
+};
