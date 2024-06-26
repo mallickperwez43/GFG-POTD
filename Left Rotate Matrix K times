@@ -1,0 +1,36 @@
+/*  
+   k rotation 
+   simple rotation means 
+   decide after k rotaion which element will come in which column
+   ie after every row size completed it should be placed on its right rotated position
+   
+*/   
+
+class Solution {
+  public:
+    vector<vector<int>> rotateMatrix(int k, vector<vector<int>> mat) {
+        // code here
+        int n = mat.size(), m = mat[0].size();
+        vector<vector<int>> ans(n, vector<int> (m, 0));
+        
+        k %= m;
+        if(k == 0) return mat;
+        
+        for(int i = 0; i < n; i++){
+            int x = 0;
+            for(int j = k; j < m; j++){
+                ans[i][x] = mat[i][j];
+                x++;
+            }
+            for(int j = 0; j < k; j++){
+                ans[i][x] = mat[i][j];
+                x++;
+            }
+        }
+        
+        return ans;
+    }
+};
+
+// TC : O(n * m)
+// SC : O(n * m)
