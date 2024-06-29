@@ -1,0 +1,32 @@
+bool isSafe(int i , int j, vector<vector<int>>& mat){
+    int n = mat.size(), m = mat[0].size();
+    if(i < 0 or i >= n or j < 0 or j >= m){
+        return false;
+    }
+    return true;
+}
+
+bool isToeplitz(vector<vector<int>>& mat) {
+    // code here
+    
+    int n = mat.size(), m = mat[0].size();
+    
+    // edge case
+    if(n == 1 or m == 1) return true;
+    
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < m; j++){
+            int newI = i + 1, newJ = j + 1;
+            if(isSafe(newI, newJ, mat)){
+                if(mat[newI][newJ] != mat[i][j])
+                    return false;
+            }
+            
+        }
+    }
+    
+    return true;
+}
+
+// TC : O(n * m)
+// SC : O(1)
