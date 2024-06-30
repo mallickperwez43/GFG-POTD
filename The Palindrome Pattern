@@ -1,0 +1,46 @@
+class Solution {
+  public:
+    bool palindromicRow(int row, int n, vector<vector<int>>& arr){
+        int start = 0, end = n - 1;
+        while(start < end){
+            if(arr[row][start] != arr[row][end]) return false;
+            
+            start++;
+            end--;
+        }
+        return true;
+    }
+    
+    bool palindromicCol(int col, int n, vector<vector<int>>& arr){
+        int start = 0, end = n - 1;
+        while(start < end){
+            if(arr[start][col] != arr[end][col]) return false;
+            
+            start++;
+            end--;
+        }
+        return true;
+    }
+    
+    string pattern(vector<vector<int>> &arr) {
+        // Code Here
+        int size = arr.size();
+        
+        // checking the palindromic row first
+        for(int i = 0; i < size; i++){
+            bool palRow = palindromicRow(i, size, arr);
+            if(palRow) return to_string(i) + " R";
+        }
+        
+        // if Row isnt palindromic then go for col
+        for(int j = 0; j < size; j++){
+            bool palCol = palindromicCol(j, size, arr);
+            if(palCol) return to_string(j) + " C";
+        }
+        
+        return "-1";
+    }
+};
+
+// TC : O(n * n)
+// SC : O(1)
