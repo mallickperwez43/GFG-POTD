@@ -1,0 +1,65 @@
+/*
+The structure of Link list Node is as follows
+struct Node
+{
+    int data;
+    struct node* next;
+
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+};
+The structure of TreeNode is as follows
+struct TreeNode
+{
+    int data;
+    TreeNode *left;
+    TreeNode *right;
+};
+*/
+
+TreeNode* makeBinaryTreeFromList(vector<int>& nodes, int index){
+    queue<TreeNode*> q;
+    TreeNode* rt = new TreeNode(nodes[index]);
+    q.push(rt);
+    
+    while(!q.empty()){
+        int size = q.size();
+        for(int i = 0; i < size; i++){
+            auto frontNode = q.front();
+            q.pop();
+            if((2 * index + 1) < nodes.size()){
+                frontNode -> left = new TreeNode(nodes[2 * index + 1]);
+                q.push(frontNode -> left);
+            }
+            if((2 * index + 2) < nodes.size()){
+                frontNode -> right = new TreeNode(nodes[2 * index + 2]);
+                q.push(frontNode -> right);
+            }
+            index++;
+        }
+    }
+    
+    return rt;
+}
+
+// Function to make binary tree from linked list.
+void convert(Node *head, TreeNode *&root) {
+    // Your code here
+    
+    // step 1 : store the LL nodes data into a vector 
+    vector<int> nodes;
+    
+    Node* temp = head;
+    while(temp != NULL){
+        nodes.push_back(temp -> data);
+        temp = temp -> next;
+    }
+    
+    // step 2 : make Binary Tree from that vector using BFS
+    int index = 0;
+    root = makeBinaryTreeFromList(nodes, index);
+    
+    return;
+}
