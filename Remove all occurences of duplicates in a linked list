@@ -1,0 +1,49 @@
+// User function Template for C++
+
+/* Linked List node structure
+
+struct Node {
+    int data;
+    struct Node *next;
+};
+
+*/
+
+class Solution {
+  public:
+    Node* removeAllDuplicates(struct Node* head) {
+        // code here
+        
+        // base case -> single node 
+        if(head -> next == NULL) return head;
+        
+        Node* ans = new Node(-1);
+        Node* prev = head;
+        Node* cur = head -> next;
+        Node* temp = ans;
+        int count = 1; // count occurances of prev node 
+        
+        while(cur){
+            if(prev -> data == cur -> data){
+                count++;
+            }
+            else if(prev -> data != cur -> data){
+                if(count == 1){
+                    temp -> next = prev;
+                    temp = temp -> next;
+                }
+                else{
+                    count = 1;
+                }
+            }
+            
+            prev = cur;
+            cur = cur -> next;
+        }
+        
+        if(count == 1) temp -> next = prev;
+        else temp -> next = NULL;
+        
+        return ans -> next;
+    }
+};
