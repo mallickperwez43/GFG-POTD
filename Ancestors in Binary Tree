@@ -1,0 +1,105 @@
+// method 1 : temp vector
+
+/*
+Structure of a node is as following
+struct Node
+{
+     int data;
+     struct Node* left;
+     struct Node* right;
+};
+*/
+
+class Solution {
+  public:
+    vector<int> ans;
+    
+    void helper(Node *root, int target, vector<int> &temp){
+        // base case
+        if(root == NULL) return;
+        
+        // base case 2 -> if target found take all the nodes in ans
+        if(root -> data == target){
+            ans = temp;
+            return;
+        }
+        
+        // take root
+        temp.push_back(root -> data);
+        
+        // recursive call
+        helper(root -> left, target, temp);
+        helper(root -> right, target, temp);
+        
+        // backtrack
+        temp.pop_back();
+    }
+    
+    // Function should return all the ancestor of the target node
+    vector<int> Ancestors(struct Node *root, int target) {
+        // Code here
+        vector<int> temp;
+        helper(root, target, temp);
+        
+        // reverse to get the ancestors in actual order
+        reverse(ans.begin(), ans.end());
+        return ans;
+    }
+};
+
+// TC : O(n)
+// SC : O(h)
+
+
+// Method 2 : flag 
+
+/*
+Structure of a node is as following
+struct Node
+{
+     int data;
+     struct Node* left;
+     struct Node* right;
+};
+*/
+
+class Solution {
+  public:
+    void helper(Node *root, int target, bool &isAncestor, vector<int> &ans){
+        // base case
+        if(root == NULL) return;
+        
+        // base case 2 -> if target found set the flag
+        if(root -> data == target){
+            isAncestor = true;
+            return;
+        }
+        
+        
+        // recursive call
+        if(isAncestor == false)
+            helper(root -> left, target, isAncestor, ans);
+        
+        if(isAncestor == false)
+            helper(root -> right, target, isAncestor, ans);
+        
+        if(isAncestor){
+            ans.push_back(root -> data);
+        }
+        
+        return;
+    }
+    
+    // Function should return all the ancestor of the target node
+    vector<int> Ancestors(struct Node *root, int target) {
+        // Code here
+        vector<int> ans;
+        bool isAncestor = false; 
+        helper(root, target, isAncestor, ans);
+        
+        return ans;
+    }
+};
+
+// TC : O(n)
+// SC : O(h)
