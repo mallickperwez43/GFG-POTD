@@ -1,0 +1,54 @@
+class Solution {
+  public:
+    int getPivot(vector<int>& arr){
+        int start = 0, end = arr.size() - 1;
+        
+        while(start < end){
+            int mid = start + (end - start) / 2;
+            
+            if(arr[mid] >= arr[0]){
+                start = mid + 1;
+            }
+            else{
+                end = mid;
+            }
+        } 
+        return start;
+    }
+    
+    int binary_search(vector<int>& arr, int start, int end, int target){
+        while(start <= end){
+            int mid = start + (end - start) / 2;
+            
+            if(arr[mid] == target){
+                return mid;
+            }
+            
+            if(target > arr[mid]){
+                start = mid + 1;
+            }
+            else{
+                end = mid - 1;
+            }
+        }
+        return -1;
+    }
+    
+    int search(vector<int>& arr, int key) {
+        // complete the function here
+        // get the pivot element(the ideal first element)
+        int pivot = getPivot(arr);
+        
+        if(key >= arr[0] and key <= arr[pivot - 1]){
+            // BS on first line
+            return binary_search(arr, 0, pivot - 1, key);
+        }
+        else{
+            // BS on second line 
+            return binary_search(arr, pivot, arr.size() - 1, key);
+        }
+    }
+};
+
+// TC : O(log n)
+// SC : O(1)
