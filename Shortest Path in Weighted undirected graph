@@ -1,0 +1,75 @@
+class Solution {
+  public:
+    vector<int> shortestPath(int n, int m, vector<vector<int>>& edges) {
+        // Code here
+        
+        // make the adj list
+        vector<vector<pair<int, int>>> adj(n + 1);
+        for(auto it : edges){
+            adj[it[0]].push_back(make_pair(it[1], it[2]));
+            adj[it[1]].push_back(make_pair(it[0], it[2]));
+        }
+        
+        // min heap , dist, parent for dijkstra
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+        int distance[n + 1];
+        int parent[n + 1];
+        
+        // set all dist as int_max and parent as themselves
+        for(int i = 0; i < n + 1; i++){
+            distance[i] = INT_MAX;
+        }
+        
+        for(int i = 1; i < n + 1; i++){
+            parent[i] = i;
+        }
+        
+        int source = 1, dest = n;
+        // make source distance as 0 and push to pq
+        distance[source] = 0;
+        pq.push(make_pair(0, 1));  // {dist, node}
+        
+        while(!pq.empty()){
+            int dist = pq.top().first;
+            int node = pq.top().second;
+            pq.pop();
+            
+            // traverse its neighbours
+            for(auto neighbour : adj[node]){
+                int edgeWeight = neighbour.second;
+                int adjNode = neighbour.first;
+                
+                // if new min dist found update it 
+                if(dist + edgeWeight < distance[adjNode]){
+                    distance[adjNode] = dist + edgeWeight;
+                    pq.push(make_pair(distance[adjNode], adjNode));
+                    parent[adjNode] = node;
+                }
+            }
+        }
+        
+        vector<int> path;
+        if(distance[dest] == INT_MAX){
+            path.push_back(-1);
+            return path;
+        }
+        
+        // build the required ans 
+        int node = dest;
+        while(node != source){
+            path.push_back(node);
+            node = parent[node];
+        }
+        // push the source and min dist and reverse it
+        path.push_back(source);
+        int minDist = distance[dest];
+        path.push_back(minDist);
+        
+        reverse(path.begin(), path.end());
+        
+        return path;
+    }
+};
+
+// TC : O(m * logn)
+// SC : O(n + m)
