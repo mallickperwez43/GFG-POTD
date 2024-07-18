@@ -1,0 +1,28 @@
+// User function Template for C++
+class Solution {
+  public:
+    string smallestNumber(int s, int d) {
+        // code here
+        string ans = "";
+        int i = 1;
+        while(i <= d){
+            // get the val to place at current postion
+            int numVal = s - (d - i) * 9; // to get minimum num try placing the maximum num
+            if(numVal <= 0){
+                numVal = 0; // place the smallest
+            }
+            // egde case -> first place
+            if(numVal == 0 and i == 1) numVal = 1; // place 1
+            if(numVal > 9) return to_string(-1); // max limit to place a val at position is 9
+            ans = ans + to_string(numVal);
+            
+            // get new sumVal
+            s = s - numVal; // remain
+            i++;
+        }
+        return ans;
+    }
+};
+
+// TC : O(d)
+// SC : O(d)
