@@ -1,0 +1,20 @@
+// User function template for C++
+class Solution {
+  public:
+
+    string printString(string s, char ch, int count) {
+        // Your code goes here
+        int index = 0;
+        while(index < s.length()){
+            if(s[index] == ch) count--;
+            if(count == 0) break;
+            index++;
+        }
+        if(index >= s.length() - 1) return "";
+        s = s.substr(index + 1);
+        return s;
+    }
+};
+
+// TC : O(s)
+// SC : O(1)
