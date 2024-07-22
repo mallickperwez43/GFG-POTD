@@ -1,0 +1,50 @@
+/* node structure  used in the program
+
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+}; */
+
+class Solution {
+  public:
+    // Function to construct binary tree from parent array.
+    Node *createTree(vector<int> parent) {
+        // Your code here
+        int n = parent.size();
+        
+        // make the array of node type making nodes
+        vector<Node*> valNodes;
+        for(int i = 0; i < n; i++){
+            valNodes.push_back(new Node(i));
+        }
+        
+        Node* root = NULL;
+        // iterate the parent array and build the tree
+        for(int i = 0; i < n; i++){
+            if(parent[i] != -1){
+                // if left of the child of parent node is NULL add to left 
+                if(valNodes[parent[i]] -> left == NULL)
+                    valNodes[parent[i]] -> left = valNodes[i];
+                // else add to right 
+                else
+                    valNodes[parent[i]] -> right = valNodes[i];
+            }
+            else{
+                // root nodes
+                root = valNodes[i];
+            }
+        }
+        
+        return root;
+    }
+};
+
+// TC : O(n)
+// SC : O(n)
