@@ -1,0 +1,41 @@
+// User function Template for C++
+//  User function template for C++
+
+class Solution {
+  public:
+    int binarySearch(vector<int> &temp, int key){
+        int index = -1, low = 0, high = temp.size() - 1, mid;
+        while(low <= high){
+            mid = low + (high - low) / 2;
+            if(temp[mid] == key){
+                index = mid;
+                high = mid - 1; // first occurance -> edge case
+            }
+            else if(temp[mid] > key) high = mid - 1;
+            else low = mid + 1;
+        }
+        return index;
+    }
+    vector<int> constructLowerArray(vector<int> &arr) {
+        // code here
+        vector<int> ans;
+        // make a temp vector and copy arr
+        vector<int> temp(arr.begin(), arr.end());
+        
+        // sort the temp arr
+        sort(temp.begin(), temp.end());
+        
+        // iterate over the arr and get the index of el in sorted arr 
+        // and erase that element in that arr
+        for(auto el : arr){
+            int index = binarySearch(temp, el);
+            ans.push_back(index);
+            temp.erase(temp.begin() + index);
+        }
+        
+        return ans;
+    }
+};
+
+// TC : O(nlogn)
+// TC : O(n)
