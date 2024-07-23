@@ -1,0 +1,22 @@
+class Solution {
+  public:
+    int alternatingMaxLength(vector<int>& arr) {
+        // Code here
+        int ans = 1, increase = 1, decrease = 1;
+        // Iterate from 1 to n - 1
+        for(int i = 1; i < arr.size(); i++){
+            if(arr[i] > arr[i - 1]){
+                increase = decrease + 1;
+            }
+            if(arr[i] < arr[i - 1]){
+                decrease = increase + 1;
+            }
+            ans = max(increase, decrease);
+        }
+        
+        return ans;
+    }
+};
+
+// TC : O(n)
+// SC : O(1)
