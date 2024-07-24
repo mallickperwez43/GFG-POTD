@@ -1,0 +1,28 @@
+// User function Template for C++
+class Solution {
+  public:
+    long long int findMaxProduct(vector<int>& arr) {
+        // Write your code here
+        // base case
+        if(arr.size() == 1) return arr[0];
+        
+        long long int pos = 1, neg = 1, largestNeg = INT_MIN, mod = 1e9 + 7, posCount = 0, negCount = 0;
+        
+        // itearte the arr and maintain the variables
+        for(auto el : arr){
+            if(el < 0){
+                neg = (neg * (long long int)el) % mod;
+                largestNeg = max((long long int)el, largestNeg);
+                negCount++;
+            }
+            if(el > 0){
+                pos = (pos * (long long int)el) % mod;
+                posCount++;
+            }
+        }
+        
+        if(posCount == 0 && negCount <= 1) return 0;
+        if(neg < 0) neg /= largestNeg;
+        return (pos * neg) % mod;
+    }
+};
