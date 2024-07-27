@@ -1,0 +1,63 @@
+/*
+struct Node {
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+};
+*/
+class Solution {
+  public:
+    void inorder(Node *root, vector<int> &v){
+        // base case
+        if(root == NULL) return;
+        
+        // LNR
+        inorder(root -> left, v);
+        v.push_back(root -> data);
+        inorder(root -> right, v);
+    }
+    
+    void merge(vector<int> &v1, vector<int> &v2, vector<int> &final){
+        int i = 0, j = 0, n = v1.size(), m = v2.size();
+        
+        while(i < n && j < m){
+            if(v1[i] <= v2[j]){
+                final.push_back(v1[i]);
+                i++;
+            }
+            else{
+                final.push_back(v2[j]);
+                j++;
+            }
+        }
+        
+        while(i < n){
+            final.push_back(v1[i]);
+            i++;
+        }
+        
+         while(j < m){
+            final.push_back(v2[j]);
+            j++;
+        }
+    }
+    // Function to return a list of integers denoting the node
+    // values of both the BST in a sorted order.
+    vector<int> merge(Node *root1, Node *root2) {
+        // Your code here
+        vector<int> BST1, BST2, ans;
+        // store the inorder of the two BSTs
+        inorder(root1, BST1);
+        inorder(root2, BST2);
+        
+        // merge two sorted array
+        merge(BST1, BST2, ans);
+        
+        return ans;
+    }
+};
