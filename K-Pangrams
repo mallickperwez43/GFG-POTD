@@ -1,0 +1,30 @@
+class Solution {
+  public:
+
+    bool kPangram(string str, int k) {
+        // code here
+        
+        // make the alphabet array
+        vector<int> alphabet(26, 0);
+        
+        // fill the array wrt str and get the char count
+        int chCnt = 0;
+        for(int i = 0; i < str.length(); i++){
+            if(str[i] != ' '){
+                alphabet[str[i] - 'a'] = 1;
+                chCnt++;
+            }
+        }
+        
+        // reiterate the array and get the count of the missing char
+        int missingCh = 0;
+        for(int i = 0; i < 26; i++){
+            if(alphabet[i] == 0){
+                missingCh++;
+            }
+        }
+        
+        if(chCnt < 26 || missingCh > k) return false;
+        return true;
+    }
+};
