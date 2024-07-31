@@ -1,0 +1,33 @@
+//User function template for C++
+
+class Solution{
+  public:
+    int countMin(string str){
+        //complete the function here
+        int n = str.length();
+        string reversedStr = str;
+        reverse(reversedStr.begin(), reversedStr.end());
+        // 2d dp of n+1 * n+1 and fill with zero
+        vector<vector<int>> dp(n + 1, vector<int>(n + 1, 0));
+        
+        // do the LCS operation and get the common ones
+        for(int i = 1; i <= n; i++){
+            for(int j = 1; j <= n; j++){
+                if(str[i - 1] == reversedStr[j - 1]){
+                    // increment in the common count
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+                }
+                else{
+                    // max count until this iteration
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        
+        // get the LCS -> common ones
+        int common = dp[n][n];
+        
+        int digitToAdd = n - common;
+        return digitToAdd;
+    }
+};
