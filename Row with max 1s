@@ -1,0 +1,79 @@
+// method 1 -> Binary Search
+
+// User function template for C++
+class Solution {
+  public:
+    int binarySearch(vector<int> &a, int size){
+        int low = 0, high = size - 1;
+        int idx = -1;
+        while(low <= high){
+            int mid = low + (high - low) / 2;
+            if(a[mid]){
+                idx = mid;
+                high = mid - 1;
+            }
+            else{
+                low = mid + 1;
+            }
+        }
+        
+        return idx;
+    }
+    int rowWithMax1s(vector<vector<int> > &arr) {
+        // code here
+        int n = arr.size(), m = arr[0].size();
+        int index = -1, firstOccOne = -1;
+        int maxi = m;  // max value is m all 1s
+        
+        for(int i = 0; i < n; i++){
+            firstOccOne = binarySearch(arr[i], m);
+            
+            // edge case if the row has all 0s -> 
+            if(firstOccOne != -1 && firstOccOne < maxi){
+                maxi = firstOccOne;
+                index = i;
+            }
+        }
+        
+        return index;
+    }
+};
+
+// TC : O(nlogm)
+// SC : O(1)
+
+
+// Method 2 -> Binary Search (variation 2 -> search space)
+
+// User function template for C++
+class Solution {
+  public:
+    int rowWithMax1s(vector<vector<int> > &arr) {
+        // code here
+        // since array is sorted for every row 
+        // take advantage of the sorted rows and start searching from the top right
+        // arr[0][m - 1]
+        // reduce the search space
+        int n = arr.size(), m = arr[0].size();
+        int row = 0;
+        int col = m - 1;
+        int index = -1;
+        
+        while(row < n && col >= 0){
+            // if one then take the index no and move toward left
+            if(arr[row][col]){
+                index = row;
+                col--;
+            }
+            else{
+                // move down
+                row++;
+            }
+        }
+        
+        return index;
+    }
+};
+
+// TC : O(n + m)
+// SC : O(1)
