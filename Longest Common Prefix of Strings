@@ -1,0 +1,39 @@
+// User function template for C++
+
+class Solution {
+  public:
+
+    string longestCommonPrefix(vector<string> arr) {
+        // your code here
+        // get the index of the smallest length of the string
+        int smallestStrIndex = 0;
+        for(int i = 0; i < arr.size(); i++){
+            if(arr[i].length() < arr[smallestStrIndex].length()){
+                smallestStrIndex = i; // update;
+            }
+        }
+        
+        string smallest = arr[smallestStrIndex];
+        
+        int i = 0;
+        int j = 0;
+        while(i < smallest.length()){
+            // check for common char in every other strings in the arr
+            for(j = 0; j < arr.size(); j++){
+                if(smallest[i] != arr[j][i]){
+                    break;
+                }
+            }
+            if(j != arr.size()){
+                break;
+            }
+            i++;
+        }
+        
+        if(i == 0){
+            return "-1";
+        }
+        
+        return smallest.substr(0, i);
+    }
+};
