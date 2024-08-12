@@ -1,0 +1,35 @@
+//User function template for C++
+
+class Solution 
+{
+    public:
+    //Function to find if there is a celebrity in the party or not.
+    int celebrity(vector<vector<int> >& M, int n) 
+    {
+        // code here 
+        for (int person = 0; person < n; ++person) {
+            bool isCelebrity = true;
+            // Check if the current person knows anyone
+            for (int other = 0; other < n; ++other) {
+                if (person != other && M[person][other] == 1) {
+                    isCelebrity = false;
+                    break;
+                }
+            }
+            // If the current person knows someone, move to the next person
+            if (!isCelebrity) continue;
+            
+            // Check if everyone knows the current person
+            for (int other = 0; other < n; ++other) {
+                if (person != other && M[other][person] == 0) {
+                    isCelebrity = false;
+                    break;
+                }
+            }
+            // If everyone knows the current person, return the person as celebrity
+            if (isCelebrity) return person;
+        }
+        // No celebrity found
+        return -1;
+    }
+};
