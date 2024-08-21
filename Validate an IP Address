@@ -1,0 +1,73 @@
+// method 1 
+
+class Solution {
+  public:
+    int isValid(string str) {
+        // code here
+        int temp = -1; // to store the string number b/w dots
+        int dotCount = 0;
+        int index = -1; // index to keep a track of dot and next should not be leading zero
+        
+        for(int i = 0; i < str.length(); i++){
+            if(str[i] == '.'){
+                dotCount++;
+                if(temp < 0 || temp > 255) return false;
+                if(temp != 0 && str[index + 1] == '0') return false; 
+                temp = -1;
+                index = i;
+            }
+            else{
+                if(temp == -1) temp = 0;
+                temp = temp * 10 + (str[i] - '0');
+            }
+        }
+        if(temp < 0 || temp > 255 || dotCount != 3) return false; // last string of num checking
+        if(temp != 0 && str[index + 1] == '0') return false;   
+        return true; 
+    }
+};
+
+// method 2 
+
+// User function Template for C++
+class Solution {
+  public:
+    int isValid(string str) {
+        // code here
+        int n = str.length();
+        int count = 0;
+        
+        // get the count of the dots
+        for(int i = 0; i < n; i++){
+            if(str[i] == '.') count++;
+        }
+        if(count != 3) return false;
+        
+        // store all possibile strings in the set
+        unordered_set<string> st;
+        for(int i = 0; i < 256; i++){
+            st.insert(to_string(i));
+        }
+        count = 0;
+        
+        // check if the string is present in the string or not
+        string temp = "";
+        for(int i = 0; i < n; i++){
+            if(str[i] != '.'){
+                temp += str[i];
+            }
+            else{
+                // if its present in set then increase the count
+                if(st.count(temp) != 0) count++;
+                // empty the string for new substring
+                temp = "";
+            }
+        }
+        
+        // check for last substr from dot + 1 to end
+        if(st.count(temp) != 0) count++;
+        if(count != 4) return false;
+        
+        return true;
+    }
+};
