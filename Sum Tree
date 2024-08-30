@@ -1,0 +1,40 @@
+/*  Tree node
+struct Node
+{
+    int data;
+    Node* left, * right;
+}; */
+
+// Should return true if tree is Sum Tree, else false
+class Solution {
+  public:
+    int solve(Node* root, bool &ans){
+        if(root == NULL){
+            return 0;
+        }
+        
+        // leaf
+        if(root -> left == NULL && root -> right == NULL){
+            return root -> data;
+        }
+        
+        // get answer from left & right subtree
+        int leftAns = solve(root -> left, ans);
+        int rightAns = solve(root -> right, ans);
+        
+        // if conditions fails toogle the ans
+        if(leftAns + rightAns != root -> data){
+            ans = false;
+        }
+        
+        // pass above
+        return leftAns + rightAns + root -> data;
+    }
+    
+    bool isSumTree(Node* root) {
+        // Your code here
+        bool ans = true;
+        solve(root, ans);
+        return ans;
+    }
+};
