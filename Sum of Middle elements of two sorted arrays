@@ -1,0 +1,50 @@
+// User function template for C++
+
+//Position this line where user code will be pasted.
+class Solution {
+  public:
+    int SumofMiddleElements(vector<int> &arr1, vector<int> &arr2) {
+        int n = arr1.size(); // Size of each array (both arrays are of the same size)
+        int low = 0; // Start of the binary search
+        int high = n - 1; // End of the binary search
+        int mid = 0; // Middle index of the current binary search range
+        
+        // Binary search loop
+        while(low <= high){
+            mid = low + (high - low) / 2; // Calculate mid index
+            int mid2 = n - 1 - mid; // Index in arr2 that complements mid to form middle elements
+            
+            // Elements just before, at, and just after the mid index in arr1
+            int prev1 = mid > 0 ? arr1[mid - 1] : INT_MIN; // Left neighbor or INT_MIN if at the start
+            int cur1 = arr1[mid]; // Current element
+            int ahead1 = mid + 1 < n ? arr1[mid + 1] : INT_MAX; // Right neighbor or INT_MAX if at the end
+            
+            // Elements just before, at, and just after the mid2 index in arr2
+            int prev2 = mid2 > 0 ? arr2[mid2 - 1] : INT_MIN; // Left neighbor or INT_MIN if at the start
+            int cur2 = arr2[mid2]; // Current element
+            int ahead2 = mid2 + 1 < n ? arr2[mid2 + 1] : INT_MAX; // Right neighbor or INT_MAX if at the end
+            
+            // The maximum of the current elements in both arrays
+            int maxEl = max(cur1, cur2);
+            
+            // Check if maxEl is a valid middle element
+            if(maxEl <= ahead1 && maxEl <= ahead2){
+                // If valid, return the sum of maxEl and the maximum of the left neighbors or the minimum of the current elements
+                return maxEl + max(max(prev1, prev2), min(cur1, cur2));
+            }
+            else if(maxEl > ahead1){
+                // If maxEl is too large, adjust binary search range to the right
+                low = mid + 1;
+            }
+            else{
+                // If maxEl is too small, adjust binary search range to the left
+                high = mid - 1;
+            }
+        }
+        
+        return 0; // If no valid middle element is found, return 0 (though this shouldn't happen)
+    }
+};
+
+// TC : O(logn) 
+// SC : O(1) 
