@@ -1,0 +1,33 @@
+// Function to find square root
+// x: element to find square root
+
+class Solution {
+  public:
+    long long int floorSqrt(long long int n) {
+        // Your code goes 
+        if(n == 0 || n == 1) 
+        return n;
+        
+        long long int low = 0;
+        long long int high = n;
+        
+        while(low <= high){
+            long long int mid = low + (high - low) / 2;
+            
+            long long int midSq = mid * mid;
+            
+            if(midSq == n){
+                return mid;
+            }
+            else if(midSq > n){
+                high = mid - 1;
+            }
+            else{
+                low = mid + 1;
+            }
+        }
+        
+        return high;
+        
+    }
+};
