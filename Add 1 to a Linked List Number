@@ -1,0 +1,70 @@
+// User function template for C++
+
+/*
+
+struct Node
+{
+    int data;
+    struct Node* next;
+
+    Node(int x){
+        data = x;
+        next = NULL;
+    }
+};
+
+*/
+
+class Solution {
+  public:
+    Node* addOne(Node* head) {
+        // Your Code here
+        // return head of list after adding one
+        
+        // Step 1 : Reverse the LL
+        Node* cur = head;
+        Node* ahead = NULL;
+        Node* prev = NULL;
+        
+        while(cur != NULL){
+            ahead = cur -> next;
+            cur -> next = prev;
+            prev = cur;
+            cur = ahead;
+        }
+        
+        Node* lastHead = prev;
+        
+        // Step 2 : Addition from prev
+        while(prev){
+            if(prev-> data != 9){
+                prev -> data += 1;
+                break;
+            }
+            else {
+                prev -> data = 0;
+                prev = prev -> next;
+            }
+        }
+        if(prev == NULL) {
+            head -> next= new Node(1);
+        }
+        
+        // step 3 : Reverse the LL again
+        cur = lastHead;
+        ahead = NULL;
+        prev = NULL;
+        
+        while(cur != NULL){
+            ahead = cur -> next;
+            cur -> next = prev;
+            prev = cur;
+            cur = ahead;
+        }
+        
+        return prev;
+    }
+};
+
+// TC : O(n)
+// SC : O(1)
