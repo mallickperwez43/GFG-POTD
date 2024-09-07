@@ -1,0 +1,29 @@
+// User function template for C++
+
+class Solution {
+  public:
+    // arr : given array
+    // k : find kth smallest element and return using this function
+    int kthSmallest(vector<int> &arr, int k) {
+        // code here
+        int maxEl = *max_element(arr.begin(), arr.end());
+        
+        vector<int> countArr(maxEl + 1, 0);
+        
+        for(auto el : arr){
+            countArr[el] = 1;
+        }
+        
+        int count = 0;
+        int i = 1;
+        
+        while(count < k){
+            if(countArr[i]){
+                count++;
+            }
+            i++;
+        }
+        
+        return i-1;
+    }
+};
