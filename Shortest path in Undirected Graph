@@ -1,0 +1,47 @@
+// User function Template for C++
+class Solution {
+  public:
+    vector<int> shortestPath(vector<vector<int>>& edges, int N,int M, int src){
+        // code here
+        // BFS
+        
+        // Step 1 : make graph
+        vector<int> adj[N];
+        for(auto it : edges){
+            int u = it[0], v = it[1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        
+        queue<pair<int, int>> q;  // (dist, node)
+        vector<int> dist(N, INT_MAX);
+        
+        // Step 2: BFS
+        q.push(make_pair(0, src));  
+        dist[src] = 0;
+        
+        while(!q.empty()){
+            int dis = q.front().first;
+            int node = q.front().second;
+            q.pop();
+            
+            if(dist[node] < dis)
+                continue;
+            
+            for(auto neighbour : adj[node]){
+                if(dist[neighbour] > dis + 1){
+                    dist[neighbour] = dis + 1;
+                    q.push(make_pair(dist[neighbour], neighbour));
+                }
+            }
+        }
+        
+        // Step 3 : check if any node is not visisted
+        for(auto &val : dist){
+            if(val == INT_MAX)
+                val = -1;
+        }
+        
+        return dist;
+    }
+};
