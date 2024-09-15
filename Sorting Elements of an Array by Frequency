@@ -1,0 +1,36 @@
+class Solution {
+  public:
+    static bool func(pair<int, int> &a, pair<int, int> &b){
+        if(a.second > b.second) return true;
+        else if(a.second < b.second) return false;
+        else return a.first < b.first;
+    }
+    // Complete this function
+    // Function to sort the array according to frequency of elements.
+    vector<int> sortByFreq(vector<int>& arr) {
+        // Your code here
+        
+        // get the freq in a map
+        unordered_map<int, int> mp;
+        for(auto &el : arr){
+            mp[el]++;
+        }
+        
+        // store in along in a vector with freq
+        vector<pair<int, int>> freqArr;
+        for(auto &el : arr){
+            freqArr.push_back(make_pair(el, mp[el]));
+        }
+        
+        // sort -> custom sort
+        sort(freqArr.begin(), freqArr.end(), func);
+        
+        // build ans
+        vector<int> ans;
+        for(auto &el : freqArr){
+            ans.push_back(el.first);
+        }
+        
+        return ans;
+    }
+};
