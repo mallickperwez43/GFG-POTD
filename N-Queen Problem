@@ -1,0 +1,65 @@
+// User function Template for C++
+
+class Solution{
+public:
+    bool isSafeToPlace(int row, int col, vector<int> temp){
+        // 3 dirn -> anti diagonal, up, diagonal
+        int r = row;
+        int c = col;
+        
+        // diagonally up
+        while(r >= 0 && c >= 0){
+            if(temp[r] == c + 1) return false; // queen present in diagonal
+            r--;
+            c--;
+        }
+        
+        r = row;
+        c = col;
+        
+        // up
+        while(r >= 0){ // same col
+            if(temp[r] == c + 1) return false; // queen present up
+            r--;
+        }
+        
+        r = row;
+        c = col;
+        
+        // anti diagonally up
+        while(r >= 0 && col < temp.size()){
+            if(temp[r] == c + 1) return false; // queen present in anti diagonal
+            r--;
+            c++;
+        }
+        
+        return true;  // when we found a place to place
+    }
+    
+    void solve(int n, vector<vector<int>> &ans, vector<int> temp, int row){
+        // row out of bound -> 1 possible solution
+        if(row == n){
+            ans.push_back(temp);
+            return;
+        }
+        
+        // 0th row -> try placing queen in every col
+        for(int col = 0; col < n; col++){
+            if(isSafeToPlace(row, col, temp)){
+                temp[row] = col + 1; // placed 
+                solve(n, ans, temp, row + 1); // recursive call
+                temp[row] = 0; // backtrack
+            }
+        }
+    }
+    
+    vector<vector<int>> nQueen(int n) {
+        // code here
+        vector<vector<int>> ans;
+        vector<int> temp(n, 0); //storing the current case ans
+        
+        solve(n, ans, temp, 0); 
+        
+        return ans;
+    }
+};
