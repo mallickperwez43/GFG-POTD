@@ -1,0 +1,18 @@
+// User function Template for C++
+
+class Solution {
+  public:
+    long long findNth(long long n) {
+        // code here.
+        long long multiplier = 1;
+        long long num = 0;
+        
+        while(n > 0){
+            num += multiplier * (n % 9);
+            n /= 9;
+            multiplier *= 10;
+        }
+        
+        return num;
+    }
+};
