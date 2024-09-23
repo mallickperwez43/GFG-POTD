@@ -1,0 +1,51 @@
+// User function Template for C++
+
+class Solution {
+  public:
+    int isCircle(vector<string> &arr) {
+        // code here
+        
+        int n = arr.size();
+        
+        vector<int> vis(n, 0);
+        vector<int> indegree(26, 0);
+        vector<int> outdegree(26, 0);
+        unordered_map<char, vector<int>> startChar; // {startChar -> index in arr}
+        queue<int> q; // index
+        
+        for(int i = 0; i < n; i++){
+            char start = arr[i][0];
+            char end = arr[i].back();
+            
+            indegree[end - 'a']++;
+            outdegree[start - 'a']++;
+            startChar[start].push_back(i);
+        }
+        
+        // edge case -> if we dont have equal no of indegree and outdegree for every char then false
+        for(int i = 0; i < 26; i++){
+            if(indegree[i] != outdegree[i]){
+                return 0;
+            }
+        }
+        
+        q.push(0);
+        vis[0] = 1;
+        int numOfNodes = 1;
+        
+        while(!q.empty()){
+            int index = q.front();
+            q.pop();
+            
+            for(auto strIdx : startChar[arr[index].back()]){ // get every strings that can connect from here
+                if(!vis[strIdx]){
+                    numOfNodes++;
+                    vis[strIdx] = 1;
+                    q.push(strIdx);
+                }
+            }
+        }
+        
+        return numOfNodes == n;
+    }
+};
