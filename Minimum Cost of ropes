@@ -1,0 +1,33 @@
+class Solution {
+  public:
+    typedef long long L;
+    // Function to return the minimum cost of connecting the ropes.
+    long long minCost(vector<long long>& arr) {
+        // Your code here
+        priority_queue<L, vector<L>, greater<L>> pq;
+        
+        for(auto el : arr){
+            pq.push(el);
+        }
+        
+        L cost = 0;
+        
+        while(pq.size() > 1){
+            L top = pq.top();
+            pq.pop();
+            
+            L secondTop = pq.top();
+            pq.pop();
+            
+            L sum = top + secondTop;
+            cost += sum;
+            
+            pq.push(sum);
+        }
+        
+        return cost;
+    }
+};
+
+// TC : O(nlogn)
+// TC : O(n)
