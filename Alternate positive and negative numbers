@@ -1,0 +1,36 @@
+// User function template for C++
+class Solution {
+  public:
+
+    void rearrange(vector<int> &arr) {
+        // code here
+        vector<int> pos;
+        vector<int> neg;
+        
+        for(auto &num : arr){
+            if(num >= 0){
+                pos.push_back(num);
+            }
+            if(num < 0){
+                neg.push_back(num);
+            }
+        }
+        
+        int posPtr = 0;
+        int negPtr = 0;
+        int index = 0;
+        
+        while(posPtr < pos.size() && negPtr < neg.size()){
+            arr[index++] = pos[posPtr++]; 
+            arr[index++] = neg[negPtr++]; 
+        }
+        
+        while(posPtr < pos.size()){
+            arr[index++] = pos[posPtr++];
+        }
+        
+        while(negPtr < neg.size()){
+            arr[index++] = neg[negPtr++];
+        }
+    }
+};
