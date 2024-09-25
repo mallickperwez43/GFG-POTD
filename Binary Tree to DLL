@@ -1,0 +1,107 @@
+// method 1
+
+/* Structure for tree and linked list
+
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+};
+ */
+
+// This function should return head to the DLL
+class Solution {
+  public:
+    Node* bToDLL(Node* root) {
+        // code here
+        Node* dummy = new Node(-1);
+        Node* cur = dummy;
+        Node* prev = NULL;
+        Node* traversalNode = root;
+        
+        stack<Node*> st; // space : O(H) at max scenario
+        
+        while(!st.empty() || traversalNode){
+            if(traversalNode != NULL){
+                st.push(traversalNode);
+                traversalNode = traversalNode -> left;
+            }
+            else{
+                traversalNode = st.top();
+                st.pop();
+                
+                cur -> right = new Node(traversalNode -> data);
+                cur = cur -> right;
+                cur -> left = prev;
+                prev = cur;
+                
+                traversalNode = traversalNode -> right;
+            }
+        }
+        
+        cur -> right = NULL;
+        
+        Node* head = dummy -> right;
+        
+        return head;
+    }
+};
+
+// method 2
+
+/* Structure for tree and linked list
+
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+};
+ */
+
+// This function should return head to the DLL
+class Solution {
+  public:
+    Node* head = NULL;
+    Node* tail = NULL;
+    
+    void build(Node* root){
+        if(!root){
+            return;
+        }
+        // inorder -> LNR
+        
+        build(root -> left);
+        
+        if(!head){
+            // set the head
+            head = root;
+        }
+        if(tail){
+            // if tail exists set its next
+            tail -> right = root;
+        }
+        
+        // adjust tail
+        root -> left = tail;
+        tail = root;
+        
+        build(root -> right);
+    }
+    Node* bToDLL(Node* root) {
+        // code here
+        build(root);
+        return head;
+    }
+};
