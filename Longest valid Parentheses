@@ -1,0 +1,90 @@
+// method 1 -> stack
+// User function Template for C++
+
+class Solution {
+  public:
+    int maxLength(string& str) {
+        // code here
+        stack<int> st; // indexes
+        st.push(-1); 
+        int result = 0;
+        
+        for(int i = 0; i < str.length(); i++){
+            if(str[i] == '('){
+                st.push(i);
+            }
+            else{
+                st.pop();
+                if(st.empty()){
+                    st.push(i);
+                }
+                else{
+                    result = max(result, i - st.top());
+                }
+            }
+        }
+        
+        return result;
+    }
+};
+
+// TC : O(n)
+// SC : O(n)
+
+// method 2 -> 2 way traversal
+
+// User function Template for C++
+
+class Solution {
+  public:
+    int maxLength(string& str) {
+        // code here
+        int maxLTR = 0;
+        int maxRTL = 0;
+        int opening = 0;
+        int closing = 0;
+        
+        // Left to right -> check pairs forward
+        for(int i = 0; i < str.length(); i++){
+            if(str[i] == '('){
+                opening++;
+            }
+            else{
+                closing++;
+            }
+            
+            if(closing > opening){
+                closing = opening = 0;
+            }
+            
+            if(closing == opening){
+                maxLTR = max(maxLTR, opening * 2);
+            }
+        }
+        
+        closing = opening = 0;
+        
+        // Right to left -> check pairs backward
+        for(int i = str.length() - 1; i >= 0; i--){
+            if(str[i] == '('){
+                opening++;
+            }
+            else{
+                closing++;
+            }
+            
+            if(opening > closing){
+                closing = opening = 0;
+            }
+            
+            if(closing == opening){
+                maxRTL = max(maxRTL, opening * 2);
+            }
+        }
+        
+        return max(maxLTR, maxRTL);
+    }
+};
+
+// TC : O(n)
+// SC : O(1)
