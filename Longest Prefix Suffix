@@ -1,0 +1,38 @@
+// User function template for C++
+
+// KMP
+
+class Solution {
+  public:
+    int lps(string str) {
+        // Your code goes here
+        int n = str.length();
+        vector<int>LPS(n, 0);
+        int prefix = 0;
+        int suffix = 1; // because 0 .. 0 is not a proper prefix and suffix
+        
+        while(suffix < n){
+            // matched so increase len by 1
+            if(str[prefix] == str[suffix]){
+                LPS[suffix] = prefix + 1;
+                prefix++;
+                suffix++;
+            }
+            else{ // not matched
+                if(prefix == 0){ // nothing matched
+                    // set suffix also zero as nothing matched
+                    LPS[suffix] = 0;
+                    suffix++;
+                }
+                else{
+                    prefix = LPS[prefix - 1]; // previously matched result
+                }
+            }
+        }
+        
+        return LPS[n - 1];
+    }
+};
+
+// TC : O(n)
+// SC : O(n)
