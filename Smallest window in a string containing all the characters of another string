@@ -1,0 +1,56 @@
+class Solution
+{
+    public:
+    //Function to find the smallest window in the string s consisting
+    //of all the characters of string p.
+    string smallestWindow (string s, string p)
+    {
+        // Your code here
+        int n = s.length(), m = p.length();
+        
+        // edge case
+        if(m > n) return "-1";
+        
+        int start = -1, end = -1; // to get the length of smallest window
+        int len = INT_MAX;
+        int uniqueCharInP = 0, matchingCount = 0; // matchingCount is the chars matched in window
+        int left = 0; // starting point of the window
+        
+        // fill the freq in p and get the unique count
+        vector<int> freqS(26, 0);
+        vector<int> freqP(26, 0);
+        for(int i = 0; i < m; i++){
+            freqP[p[i] - 'a']++;
+            if(freqP[p[i] - 'a'] == 1){ // unique 
+                uniqueCharInP++;
+            }
+        }
+        
+        // sliding window
+        for(int right = 0; right < n; right++){
+            // expand window and fill the freqS 
+            freqS[s[right] - 'a']++;
+            
+            if(freqS[s[right] - 'a'] == freqP[s[right] - 'a']){ // found a matching char
+                matchingCount++;
+            }
+            
+            // shrink the window when we have matched all the unique char in p
+            if(matchingCount == uniqueCharInP){
+                while(freqS[s[left] - 'a'] > freqP[s[left] - 'a']){
+                    freqS[s[left] - 'a']--; // removing the excessive char
+                    left++; // shrinking
+                }
+                
+                // update the len if the smaller len is found
+                if(len > right - left + 1){
+                    start = left;
+                    end = right;
+                    len = right - left + 1;
+                }
+            }
+        }
+        
+        return (start == -1 ? "-1" : s.substr(start, len)); 
+    }
+};
