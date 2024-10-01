@@ -1,0 +1,75 @@
+/*
+struct Node {
+  int data;
+  struct Node *next;
+  Node(int x) {
+    data = x;
+    next = NULL;
+  }
+};
+*/
+
+class Solution {
+  public:
+    Node* getMid(Node* head){
+        Node* slow = head;
+        Node* fast = head -> next;
+        
+        while(fast && fast -> next){
+            slow = slow -> next;
+            fast = fast -> next -> next;
+        }
+        
+        return slow;
+    }
+    
+    Node* reverseLL(Node* head){
+        Node* cur = head;
+        Node* prev = NULL;
+        Node* ahead = NULL;
+        
+        while(cur){
+            ahead = cur -> next;
+            cur -> next = prev;
+            prev = cur;
+            cur = ahead;
+        }
+        
+        return prev;
+    }
+    
+    // Function to check whether the list is palindrome.
+    bool isPalindrome(Node *head) {
+        // Your code here
+        
+        if(head == NULL or head -> next == NULL){
+            return true;
+        }
+        
+        // get the middle 
+        Node* middle = getMid(head);
+        
+        // reverse from the next of middle 
+        Node* temp = middle -> next;
+        middle -> next = reverseLL(temp);
+        
+        // compare both
+        Node* head1 = head;
+        Node* head2 = middle -> next;
+        
+        while(head2){
+            if(head1 -> data != head2 -> data){
+                return false;
+            }
+            
+            head1 = head1 -> next;
+            head2 = head2 -> next;
+        }
+        
+        // reverse it again
+        temp = middle -> next;
+        middle -> next = reverseLL(temp);
+        
+        return true;
+    }
+};
