@@ -1,0 +1,14 @@
+// User function template for C++
+
+class Solution {
+  public:
+    int totalCount(int k, vector<int>& arr) {
+        // code here
+        int ans = 0;
+        for(auto a : arr){
+            ans += a % k ? a / k + 1 : a / k;
+        }
+        
+        return ans;
+    }
+};
