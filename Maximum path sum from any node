@@ -1,0 +1,22 @@
+class Solution {
+  public:
+    int solve(Node* root, int& maxSum){
+        if(root == NULL) return 0;
+        
+        int left = max(0, solve(root -> left, maxSum));
+        int right = max(0, solve(root -> right, maxSum));
+        
+        maxSum = max(maxSum, root -> data + left + right);
+        
+        return root -> data + max(left, right); 
+    }
+    
+    //Function to return maximum path sum from any node in a tree.
+    int findMaxSum(Node* root)
+    {
+        // Your code goes here
+        int maxSum = INT_MIN;
+        solve(root, maxSum);
+        return maxSum;
+    }
+};
