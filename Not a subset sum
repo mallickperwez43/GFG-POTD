@@ -1,0 +1,20 @@
+// User function template for C++
+
+class Solution {
+  public:
+    long long findSmallest(vector<int> &arr) {
+        // Your code goes here.
+        
+        long long numToSearch = 1;
+        
+        for(int &ele : arr){
+            if((long long)ele > numToSearch){
+                return numToSearch;
+            }
+            
+            numToSearch += (long long)ele;
+        }
+        
+        return numToSearch;
+    }
+};
