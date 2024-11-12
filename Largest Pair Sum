@@ -1,0 +1,20 @@
+class Solution {
+  public:
+    int pairsum(vector<int> &arr) {
+        // code here
+        int largest = INT_MIN;
+        int secondLargest = INT_MIN;
+        
+        for(int el : arr){
+            if(el > largest){
+                secondLargest = largest;
+                largest = el;
+            }
+            else if(el > secondLargest){
+                secondLargest = el;
+            }
+        }
+        
+        return largest + secondLargest;
+    }
+};
