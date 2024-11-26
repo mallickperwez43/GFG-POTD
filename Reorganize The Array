@@ -1,0 +1,16 @@
+class Solution {
+  public:
+    vector<int> rearrange(vector<int>& arr) {
+        // Code here
+        int n = arr.size();
+        
+        for(int i = 0; i < n; i++){
+            if(arr[i] != -1 && arr[i] != i){ // place arr[i] in its correct position
+                swap(arr[i], arr[arr[i]]); // range 0 to n - 1;
+                i--; // check again if we place the correct element in its place
+            }
+        }
+        
+        return arr;
+    }
+};
