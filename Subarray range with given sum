@@ -1,0 +1,29 @@
+class Solution {
+  public:
+    // Function to count the number of subarrays which adds to the given sum.
+    int subArraySum(vector<int>& arr, int tar) {
+        // Your code here
+        
+        unordered_map<int, int> mp; // storing the {sum : occurances}
+        
+        int ans = 0;
+        int sum = 0;
+        
+        for(int& el : arr){
+            sum += el;   
+            
+            if(sum == tar){ // simple found 
+                ans++;
+            }
+            
+            int leftSum = sum - tar; 
+            if(mp.find(leftSum) != mp.end()){ // range sum
+                ans += mp[leftSum];
+            }
+            
+            mp[sum]++;
+        }
+        
+        return  ans;
+    }
+};
