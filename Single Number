@@ -1,0 +1,14 @@
+// User function template for C++
+class Solution {
+  public:
+    int getSingle(vector<int>& arr) {
+        // code here
+        int num = 0;
+        
+        for(int el : arr){
+            num ^= el;
+        }
+        
+        return num;
+    }
+};
