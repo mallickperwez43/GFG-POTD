@@ -1,0 +1,30 @@
+class Solution {
+  public:
+    string roundToNearest(string str) {
+        // Complete the function
+        int n = str.length() - 1;
+        
+        if(str[n] <= '5'){ // simply round the last char
+            str[n] = '0';
+            return str;
+        }
+        
+        str[n] = '0'; // round up
+        n--;
+        
+        // trailling '9's
+        while(n >= 0 && str[n] == '9'){
+            str[n] = '0';
+            n--;
+        }
+        
+        // all 999..99 so made 0 so add 1 at begining
+        if(n == -1){
+            return '1' + str;
+        }
+        
+        // increment the non 9 digit
+        str[n]++;
+        return str;
+    }
+};
