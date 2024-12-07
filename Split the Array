@@ -1,0 +1,15 @@
+// User function template for C++
+class Solution {
+  public:
+    const int mod = 1e9+7;
+    int countgroup(vector<int>& arr) {
+        // Complete the function
+        int xorVal = 0;
+        int n = arr.size();
+        for(int val : arr){
+            xorVal ^= val;
+        }
+        
+        return (xorVal == 0) ? (int)((1 << (n - 1)) - 1) % mod : 0;
+    }
+};
