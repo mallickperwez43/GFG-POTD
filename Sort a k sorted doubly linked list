@@ -1,0 +1,47 @@
+// User function Template for C++
+
+/*
+// a node of the doubly linked list
+class DLLNode
+{
+public:
+    int data;
+    DLLNode *next;
+    DLLNode *prev;
+    DLLNode(int val)
+    {
+        data = val;
+        this->next = NULL;
+        this->prev = NULL;
+    }
+};
+*/
+class Solution {
+  public:
+    // function to sort a k sorted doubly linked list
+    DLLNode *sortAKSortedDLL(DLLNode *head, int k) {
+        // code here
+        priority_queue<int, vector<int>, greater<int>> pq;
+        DLLNode* cur = head; // placing the values
+        DLLNode* temp = head; // traversing
+        
+        while(temp != NULL){
+            pq.push(temp -> data);
+            if(pq.size() > k){
+                cur -> data = pq.top();
+                pq.pop();
+                cur = cur -> next;
+            }
+            temp = temp -> next;
+        }
+        
+        // we traversed the list but last k nodes are remaining
+        while(!pq.empty()){
+            cur -> data = pq.top();
+            pq.pop();
+            cur = cur -> next;
+        }
+        
+        return head;
+    }
+};
