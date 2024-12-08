@@ -1,0 +1,34 @@
+class Solution {
+  public:
+    int sameOccurrence(vector<int>& arr, int x, int y) {
+        // code here
+        
+        // same occurances -> x == y -> x - y = 0
+        int n = arr.size();
+        
+        int diff = 0;
+        int result = 0;
+        unordered_map<int, int> mp; // diff : count
+        mp[0] = 1;
+        
+        for(int i = 0; i < n; i++){
+            if(arr[i] == x){
+                diff++;
+            }
+            else if(arr[i] == y){
+                diff--;
+            }
+            
+            if(mp.count(diff)){
+                result += mp[diff];
+            }
+            
+            mp[diff]++;
+        }
+        
+        return result;
+    }
+};
+
+// TC : O(n)
+// SC : O(n)
