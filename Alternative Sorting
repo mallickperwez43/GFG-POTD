@@ -1,0 +1,26 @@
+class Solution {
+
+  public:
+    vector<int> alternateSort(vector<int>& arr) {
+        // Your code goes here
+        int n = arr.size();
+        vector<int> ans(n);
+        sort(arr.begin(), arr.end());
+        
+        int i = 0;
+        int j = n - 1;
+        
+        for(int k = 0; k < n; k++){
+            if(k & 1){ // smallest
+                ans[k] = arr[i];
+                i++;
+            }
+            else{ // largest
+                ans[k] = arr[j];
+                j--;
+            }
+        }
+        
+        return ans;
+    }
+};
