@@ -1,0 +1,26 @@
+/*
+  Node is defined as
+struct node
+{
+    int data;
+    struct node* next;
+
+    node(int x){
+        data = x;
+        next = NULL;
+    }
+}*head;
+*/
+class Solution {
+  public:
+    int count(struct Node* head, int key) {
+        // add your code here
+        int cnt = 0;
+        Node* cur = head;
+        while(cur){
+            if(cur -> data == key) cnt++;
+            cur = cur -> next;
+        }
+        return cnt;
+    }
+};
