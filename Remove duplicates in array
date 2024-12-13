@@ -1,0 +1,17 @@
+class Solution {
+  public:
+    vector<int> removeDuplicate(vector<int>& arr) {
+        // code here
+        vector<bool> seen(101, false);
+        vector<int> ans;
+        
+        for(int& num : arr){
+            if(!seen[num]){
+                ans.push_back(num);
+                seen[num] = true;
+            }
+        }
+        
+        return ans;
+    }
+};
