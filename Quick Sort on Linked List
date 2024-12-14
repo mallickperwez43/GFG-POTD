@@ -1,0 +1,67 @@
+/* a node of the singly linked list
+struct node
+{
+    int data;
+    struct node *next;
+
+    node(int x){
+        data = x;
+        next = NULL;
+    }
+}; */
+
+// Solution class with quickSort function
+class Solution {
+  public:
+    static void partition(Node* pivot, Node* &leftLL, Node* &rightLL){
+        Node* temp = pivot -> next;
+        while(temp != NULL){
+            Node* nextNode = temp -> next;
+            if(temp -> data <= pivot -> data){
+                temp -> next = leftLL;
+                leftLL = temp;
+            }
+            else{
+                temp -> next = rightLL;
+                rightLL = temp;
+            }
+            temp = nextNode;
+        }
+    }  
+    
+    struct Node* quickSort(struct Node* head) {
+        // code here
+        if(head == NULL || head -> next == NULL){
+            return head;
+        }
+        
+        Node* leftLL  = NULL;
+        Node* rightLL = NULL;
+        
+        // partition the pivot leftLL and rightLL 
+        partition(head, leftLL, rightLL); 
+        
+        // recursively sort leftLL and rightLL
+        leftLL  = quickSort(leftLL);
+        rightLL = quickSort(rightLL);
+        
+        // build connection between leftLL pivot and rightLL
+        Node* lastNodeOfLeftLL = leftLL;
+        while(lastNodeOfLeftLL != NULL && lastNodeOfLeftLL -> next != NULL){
+            lastNodeOfLeftLL = lastNodeOfLeftLL -> next;
+        }
+        
+        if(lastNodeOfLeftLL == NULL){ // edge case -> every nodes val is greater than pivot(head) left will be head
+            leftLL = head;
+        }
+        else{
+            lastNodeOfLeftLL -> next = head; // connect leftLL and pivot
+        }
+        
+        head -> next = rightLL; // connect pivot and rightLL
+        
+        Node* newHead = leftLL;
+        
+        return newHead;
+    }
+};
