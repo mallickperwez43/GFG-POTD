@@ -1,0 +1,21 @@
+// User function template for C++
+class Solution {
+  public:
+    /* Returns count of pairs with difference k  */
+    int countPairsWithDiffK(vector<int>& arr, int k) {
+        // code here
+        unordered_map<int,int> mp; // num -> occurance
+        int pairCnt = 0;
+        
+        for(int& num : arr){
+            mp[num]++;
+        }
+        
+        for(int& num : arr){
+            if(mp.find(num + k) != mp.end()){
+                pairCnt += mp[num + k];
+            }
+        }
+        return pairCnt;
+    }
+};
