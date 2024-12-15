@@ -1,0 +1,48 @@
+/*structure of the node of the DLL is as
+struct Node {
+    int data;
+    struct Node* prev, *next;
+};
+*/
+// function should insert a new node in sorted way in
+// a sorted doubly linked list
+// Return the head after insertion
+class Solution {
+  public:
+    Node* sortedInsert(Node* head, int x) {
+        // Code here
+        Node* temp = head;
+        Node* newNode = new Node();
+        newNode -> next = NULL;
+        newNode -> prev = NULL;
+        newNode -> data = x;
+        
+        while(temp != NULL){
+            if(temp -> data >= x && temp -> prev == NULL) { // head
+                newNode -> next = temp;
+                temp -> prev = newNode;
+                head = newNode;
+                break;
+            }
+            else if(temp -> data <= x && temp -> next == NULL) { // tail
+                temp -> next = newNode;
+                newNode -> prev = temp;
+                break;
+            }
+            else if(x >= temp -> data && x <= temp -> next -> data){ // in between
+                Node* nextNode = temp -> next;
+                
+                temp -> next = newNode;
+                newNode -> prev = temp;
+                newNode -> next = nextNode;
+                nextNode -> prev = newNode;
+                
+                break;
+            }
+            
+            temp = temp -> next;
+        }
+        
+        return head;
+    }
+};
