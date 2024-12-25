@@ -1,0 +1,31 @@
+/* Tree node structure  used in the program
+ struct Node
+ {
+     int data;
+     Node* left, *right;
+}; */
+
+class Solution {
+  public:
+    void solve(Node* root, int& sum, int cur){
+        if(root -> left == NULL && root -> right == NULL){
+            cur = cur * 10 + root -> data;
+            sum += cur;
+            return;
+        }
+        if(root -> left){
+            solve(root -> left, sum, cur * 10 + root -> data);
+        }
+        if(root -> right){
+            solve(root -> right, sum, cur * 10 + root -> data);
+        }
+        
+        return;
+    }
+    int treePathsSum(Node *root) {
+        // code here.
+        int sum = 0;
+        solve(root, sum, 0);
+        return sum;
+    }
+};
