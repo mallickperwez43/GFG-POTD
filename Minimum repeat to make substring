@@ -1,0 +1,32 @@
+// User function Template for C++
+
+class Solution {
+  public:
+    int minRepeats(string& s1, string& s2) {
+        // code here
+        int n1 = s1.length();
+        int n2 = s2.length();
+        int curS1size = n1;
+        string curStr = s1;
+        int ans = 1;
+        
+        while(curS1size <= 2 * n2){
+            // If the current size of the repeated s1 string is greater than or equal to the length of s2
+            if(curS1size >= n2){ 
+                if(curStr.find(s2) != string :: npos){
+                    return ans;
+                }
+            }
+            curStr += s1;
+            curS1size += n1;
+            ans++;
+        }
+        
+        curStr += s1; // Check one more time after the loop to see if s2 is a substring of the current repeated string
+        if(curStr.find(s2) != string :: npos){
+            return ans;
+        }
+        
+        return -1;
+    }
+};
