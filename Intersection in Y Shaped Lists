@@ -1,0 +1,52 @@
+/* Linked List Node
+struct Node {
+  int data;
+  struct Node *next;
+  Node(int x) {
+    data = x;
+    next = NULL;
+  }
+}; */
+
+class Solution {
+  public:
+    static int findLength(Node* head){
+        int len = 0;
+        
+        while(head){
+            len++;
+            head = head -> next;
+        }
+        
+        return len;
+    }
+    // Function to find intersection point in Y shaped Linked Lists.
+    int intersectPoint(Node* head1, Node* head2) {
+        // Your Code Here
+        // s1 : find length of both LL
+        int len1 = findLength(head1);
+        int len2 = findLength(head2);
+        
+        // s2 : eqaulize the Longer length LL to the Smaller Length LL
+        while(len1 > len2){
+            head1 = head1 -> next;
+            len1--;
+        }
+        while(len2 > len1){
+            head2 = head2 -> next;
+            len2--;
+        }
+        
+        // s3 : find the common address node in both the LL
+        while(head1 && head2){
+            if(head1 == head2){
+                return head1 -> data;
+            }
+            
+            head1 = head1 -> next;
+            head2 = head2 -> next;
+        }
+        
+        return -1;
+    }
+};
