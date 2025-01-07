@@ -1,0 +1,32 @@
+class Solution {
+  public:
+    void nextPermutation(vector<int>& arr) {
+        // code here
+        int n = arr.size();
+        
+        // First find the Gola Index (i - 1)
+        int gola_idx = -1;
+        
+        for(int i = n - 1; i > 0; i--){
+            if(arr[i] > arr[i - 1]){
+                gola_idx = i - 1;
+                break;
+            }
+        }
+        
+        if(gola_idx != -1){
+            int swap_index = gola_idx;
+        
+            for(int j = n - 1; j >= gola_idx + 1; j--){
+                if(arr[j] > arr[gola_idx]){
+                    swap_index = j;
+                    break;
+                }
+            }
+        
+            swap(arr[swap_index], arr[gola_idx]);
+        }
+        
+        reverse(arr.begin() + gola_idx + 1, arr.end());
+    }
+};
