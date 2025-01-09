@@ -1,0 +1,27 @@
+// User function Template for C++
+class Solution {
+  public:
+    // Function to find maximum product subarray
+    int maxProduct(vector<int> &arr) {
+        // Your Code Here
+        int maxProd       = INT_MIN;
+        int prodFromStart = 1;
+        int prodFromEnd   = 1;
+        int n             = arr.size();
+        
+        for(int i = 0; i < n; i++){
+            prodFromStart *= arr[i];
+            prodFromEnd   *= arr[n - i - 1];
+            
+            maxProd = max({maxProd, prodFromStart, prodFromEnd});
+            
+            if(prodFromStart == 0) 
+                prodFromStart = 1;
+            
+            if(prodFromEnd == 0) 
+                prodFromEnd = 1;
+        }
+        
+        return maxProd;
+    }
+};
