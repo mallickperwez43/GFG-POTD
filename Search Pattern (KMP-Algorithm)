@@ -34,3 +34,57 @@ class Solution
         }
      
 };
+
+
+// another way to code
+
+class Solution {
+  public:
+    void fillLPS(string& newStr, vector<int>& LPS){
+        int len = 0; // length pf prev longest prefix which matches suffix
+        int i = 1; // start from second char becoz single char dont have the suffix 
+        int n = newStr.length();
+        
+        while(i < n){
+            if(newStr[i] == newStr[len]){ // match
+                LPS[i] = len + 1;
+                len++;
+                i++;
+            }
+            else{
+                if(len == 0){
+                    LPS[i] = 0;  // no match 
+                    i++;
+                }
+                else{
+                    len = LPS[len - 1]; // prev longest prefix and suffix 
+                }
+            }
+        }
+    }
+    
+    vector<int> search(string& pat, string& txt) {
+        // code here
+        int n = pat.length();
+        
+        string newStr = pat + '#' + txt;
+        int m = newStr.length();
+        
+        vector<int> LPS(newStr.length(), 0);
+        
+        fillLPS(newStr, LPS); 
+        
+        vector<int> result;
+        
+        int startIdx = n + 1; // pat len + '#'
+        
+        while(startIdx < m){
+            if(LPS[startIdx] == n){
+                result.push_back(startIdx - LPS[startIdx] - n);
+            }
+            startIdx++;
+        }
+        
+        return result;
+    }
+};
