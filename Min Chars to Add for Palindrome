@@ -1,0 +1,40 @@
+class Solution {
+  public:
+    void fillLPS(string& str, vector<int>& LPS){
+        int n = str.length();
+        int len = 0; // length of current longest prefix and suffix
+        int i = 1;
+        
+        while(i < n){
+            if(str[len] == str[i]){
+                len++;
+                LPS[i] = len;
+                i++;
+            }
+            else{
+                if(len > 0){
+                    len = LPS[len - 1]; // prev longest length 
+                }
+                else{
+                    LPS[i] = 0;
+                    i++;
+                }
+            }
+        }
+    }
+    int minChar(string& s) {
+        // Write your code here
+        int n = s.length();
+        string revStr = s;
+        reverse(revStr.begin(), revStr.end());
+        
+        // fill the LPS array;
+        string newStr = s + '#' + revStr;
+        int m = newStr.length();
+        vector<int>LPS(m, 0);
+        
+        fillLPS(newStr, LPS);
+        
+        return n - LPS[m - 1];
+    }
+};
