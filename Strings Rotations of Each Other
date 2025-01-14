@@ -1,0 +1,34 @@
+class Solution {
+  public:
+    // Function to check if two strings are rotations of each other or not.
+    bool areRotations(string &s1, string &s2) {
+        // Your code here
+        string str = s2 + '#' + s1 + s1; // s2 -> prefix, s1 + s1 -> suffix
+        int n = str.length();
+        int len = 0; // length of the prefix matched 
+        int i = 1; // cur char
+        vector<int> LPS(n, 0);
+        
+        while(i < n){
+            if(str[len] == str[i]){
+                len++;
+                LPS[i] = len;
+                i++;
+                
+                if(str[len] == '#'){ // found the whole prefix/s2 
+                    return true;
+                }
+            }
+            else{
+                if(len > 0){
+                    len = LPS[len - 1];
+                }
+                else{
+                    i++;
+                }
+            }
+        }
+        
+        return false;
+    }
+};
