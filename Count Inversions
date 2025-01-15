@@ -1,0 +1,63 @@
+class Solution {
+  public:
+    int merge(int left, int mid, int right, vector<int>& arr, vector<int>& temp){
+        int i = left; // start idx for leftSubarray
+        int j = mid + 1; // start idx for rightSubarray
+        int k = left;  // temp array idx
+        int invCnt = 0;
+        
+        while(i <= mid && j <= right){
+            if(arr[i] <= arr[j]){
+                temp[k] = arr[i];
+                i++;
+            }
+            else{
+                temp[k] = arr[j];
+                invCnt += (mid - i + 1); // kitno se bada hai
+                j++;
+            }
+            
+            k++;
+        }
+        
+        while(i <= mid){
+            temp[k] = arr[i];
+            i++;
+            k++;
+        }
+        
+        while(j <= right){
+            temp[k] = arr[j];
+            j++;
+            k++;
+        }
+        
+        // copy merged elememnts back into arr from temp 
+        for(int idx = left; idx <= right; idx++){
+            arr[idx] = temp[idx];
+        }
+        
+        return invCnt;
+    }
+    
+    int mergeSort(int left, int right, vector<int>& arr, vector<int>& temp){
+        int invCnt = 0;
+        if(left < right){
+            int mid = left + (right - left) / 2;
+            
+            invCnt += mergeSort(left, mid, arr, temp); // marge sort from left to mid
+            invCnt += mergeSort(mid + 1, right, arr, temp); // marge sort from mid + 1 to right
+            
+            invCnt += merge(left, mid, right, arr, temp);
+        }
+        
+        return invCnt;
+    }
+    // Function to count inversions in the array.
+    int inversionCount(vector<int> &arr) {
+        // Your Code Here
+        int n = arr.size();
+        vector<int> temp(n);
+        return mergeSort(0, n - 1, arr, temp);
+    }
+};
