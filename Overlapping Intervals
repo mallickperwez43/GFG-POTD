@@ -1,0 +1,31 @@
+class Solution {
+  public:
+    vector<vector<int>> mergeOverlap(vector<vector<int>>& arr) {
+        // Code here
+        
+        sort(arr.begin(), arr.end()); // sort based on starting points
+        
+        vector<vector<int>> ans;
+        
+        vector<int> prevInt = arr[0];
+        
+        for(int i = 1; i < arr.size(); i++){
+            vector<int> curInt = arr[i];
+            int curStart = curInt[0];
+            int curEnd   = curInt[1];
+            int prevEnd  = prevInt[1];
+            
+            if(curStart <= prevEnd){ // can be merged in prevInt
+                prevInt[1] = max(curEnd, prevEnd);
+            }
+            else{
+                ans.push_back(prevInt);
+                prevInt = curInt;
+            }
+        }
+        
+        ans.push_back(prevInt); // last interval
+        
+        return ans;
+    }
+};
