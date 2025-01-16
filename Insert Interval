@@ -1,0 +1,39 @@
+// User function Template for C++
+
+class Solution {
+  public:
+    vector<vector<int>> insertInterval(vector<vector<int>> &intervals,
+                                       vector<int> &newInterval) {
+        // code here
+        vector<vector<int>> ans;
+        bool merged = false;
+        int start = newInterval[0];
+        int end   = newInterval[1];
+        
+        for(auto& interval : intervals){
+            int curStart = interval[0];
+            int curEnd   = interval[1];
+            
+            if(curEnd < start){ // non overlap -> ended first
+                ans.push_back(interval);
+            }
+            else if(curStart > end){ // non overlap -> started late
+                if(!merged){
+                    ans.push_back({start, end});
+                    merged = true;
+                }
+                ans.push_back(interval);
+            }
+            else{ // merged
+                start = min(start, curStart);
+                end   = max(end, curEnd);
+            }
+        }
+        
+        if(!merged){
+            ans.push_back({start, end});
+        }
+        
+        return ans;
+    }
+};
